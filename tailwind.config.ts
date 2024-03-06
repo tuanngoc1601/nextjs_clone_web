@@ -24,6 +24,8 @@ const config: Config = {
         borderColor: "#d1d1d1",
         bgHover: "#e7e7e7",
         bgSection: "#f5f5f5",
+        iconColor: "#555555",
+        bgButtonIcon: "#ffffffe6",
       },
       fontSize: {
         '15px': "15px",
