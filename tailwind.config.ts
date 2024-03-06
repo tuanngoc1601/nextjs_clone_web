@@ -13,8 +13,12 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      width: {
+        150: "150px",
+      },
       height: {
         62: "62px",
+        150: "150px",
         280: "280px",
       },
       colors: {
@@ -26,6 +30,7 @@ const config: Config = {
         bgSection: "#f5f5f5",
         iconColor: "#555555",
         bgButtonIcon: "#ffffffe6",
+        bgHoverItem: "#e1e1e1",
       },
       fontSize: {
         '15px': "15px",
@@ -34,9 +39,6 @@ const config: Config = {
       margin: {
         '62px': "62px",
       },
-      backgroundColor: {
-        'bgBlur': "",
-      }
     },
   },
   plugins: [],

@@ -2,10 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getPhotos } from "@/api/apiRequest";
-import { FaHeart } from "react-icons/fa";
-import { LuPlus } from "react-icons/lu";
-import { FaArrowDown } from "react-icons/fa6";
+import ImageItem from "./ImageItem";
 
 interface Photo {
     id: string;
@@ -34,7 +31,7 @@ const PhotoContainer: React.FC = () => {
 
     useEffect(() => {
         fetch(
-            `https://api.unsplash.com/photos?client_id=${client_id}&per_page=${perPage}`
+            `https://api.unsplash.com/photos?client_id=${client_id}&per_page=${perPage}&page=${page}`
         )
             .then((res) => res.json())
             .then((data) => {
@@ -52,39 +49,14 @@ const PhotoContainer: React.FC = () => {
         >
             <div className="w-full columns-3 gap-4 space-y-4 px-5 mt-10">
                 {dataPhotos &&
-                    dataPhotos?.map((photo, index) => {
-                        return (
-                            <div className="image-container" key={index}>
-                                <img src={photo.urls.small} alt="" />
-                                <div className="overlay flex flex-col items-center justify-between p-4">
-                                    <div className="w-full flex flex-row items-center justify-end gap-x-2">
-                                        <button className="px-3 py-2 text-base text-iconColor rounded border-black shadown-sm bg-bgButtonIcon hover:text-textPrimary hover:bg-white">
-                                            <FaHeart />
-                                        </button>
-                                        <button className="px-3 py-2 text-base text-iconColor rounded border-black shadown-sm bg-bgButtonIcon hover:text-textPrimary hover:bg-white">
-                                            <LuPlus />
-                                        </button>
-                                    </div>
-                                    <div className="w-full flex flex-row items-center justify-between">
-                                        <div className="flex flex-row items-center justify-between gap-x-2">
-                                            <img
-                                                src={
-                                                    photo.user.profile_image
-                                                        .small
-                                                }
-                                                alt=""
-                                                className="w-8 h-8 rounded-full object-cover"
-                                            />
-                                            <p className="text-white text-15px overflow-hidden font-medium">{photo.user.name}</p>
-                                        </div>
-                                        <button className="px-3 py-2 text-base text-iconColor rounded border-black shadown-sm bg-bgButtonIcon hover:text-textPrimary hover:bg-white">
-                                            <FaArrowDown />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })}
+                    dataPhotos?.map((photo, index) => (
+                        <ImageItem
+                            key={index}
+                            imageUrl={photo.urls.small}
+                            userImageUrl={photo.user.profile_image.small}
+                            username={photo.user.name}
+                        />
+                    ))}
             </div>
         </InfiniteScroll>
     );

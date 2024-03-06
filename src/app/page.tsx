@@ -1,6 +1,5 @@
 import NavBar from "@/components/NavBar";
 import PhotoContainer from "@/components/PhotoContainer";
-import { url } from "inspector";
 import { FaSquarespace } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 import { TbLineScan } from "react-icons/tb";
