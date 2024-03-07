@@ -52,8 +52,6 @@ export default function PhotoDetail({ params }: { params: { slug: string } }) {
             });
     }, [params.slug]);
 
-    console.log(photo);
-
     return (
         <div className="w-full flex flex-col items-center justify-center">
             <div className="sticky top-14 z-10 bg-white h-14 w-full flex flex-row items-center justify-between mt-62px px-5 ">

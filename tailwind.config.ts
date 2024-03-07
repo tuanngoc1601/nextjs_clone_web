@@ -16,6 +16,8 @@ const config: Config = {
       width: {
         150: "150px",
         870: "870px",
+        "70%": "70%",
+        "30%": "30%",
       },
       height: {
         62: "62px",
@@ -40,6 +42,9 @@ const config: Config = {
       },
       margin: {
         '62px': "62px",
+      },
+      aspectRatio: {
+        '10/7': '10 / 7',
       },
     },
   },

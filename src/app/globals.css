@@ -33,3 +33,7 @@ body {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
+
+.infinite-scroll-component__outerdiv {
+  width: 100% !important;
+}
