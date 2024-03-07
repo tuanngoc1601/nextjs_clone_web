@@ -29,7 +29,7 @@ interface Collection {
 
 export default function CollectionPage() {
     const client_id = process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID;
-    const perPage = 30;
+    const [perPage, setPerPage] = useState(8);
     const [collections, setCollections] = useState<Collection[]>([]);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
