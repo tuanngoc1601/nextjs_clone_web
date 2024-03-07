@@ -32,7 +32,6 @@ interface ProfileProps {
 }
 
 const ProfileInfo: React.FC<ProfileProps> = React.memo((props) => {
-    console.log(1);
     return (
         <div className="flex flex-row w-7/12 mx-auto items-start justify-center gap-x-10">
             <img

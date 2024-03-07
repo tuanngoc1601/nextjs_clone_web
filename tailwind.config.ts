@@ -15,11 +15,13 @@ const config: Config = {
       },
       width: {
         150: "150px",
+        870: "870px",
       },
       height: {
         62: "62px",
         150: "150px",
         280: "280px",
+        580: "580px",
       },
       colors: {
         bgInputSearch: "#eeeeee",
