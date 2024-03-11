@@ -6,8 +6,8 @@ import { TbLineScan } from "react-icons/tb";
 
 const Header = () => {
     return (
-        <header className="w-full h-62 fixed backdrop-blur-md z-50 insert-x-0 top-0 flex flex-row items-center justify-between py-3 px-5 bg-white">
-            <Link href={"/"}>
+        <header className="w-full h-62 fixed backdrop-blur-md z-50 insert-x-0 top-0 flex flex-row items-center justify-between py-3 lg:px-5 sm:px-2.5 bg-white ">
+            <Link className="flex-none" href={"/"}>
                 <svg
                     width="32"
                     height="32"
@@ -21,8 +21,8 @@ const Header = () => {
                     <path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path>
                 </svg>
             </Link>
-            <div className="w-full flex flex-row items-center justify-between px-8 gap-x-8">
-                <div className="w-full flex flex-row items-center justify-between bg-bgInputSearch rounded-full hover:bg-bgHover hover:shadow-sm hover:shadown-bgHover">
+            <div className="w-full flex flex-row items-center justify-between px-4 gap-x-8">
+                <div className="w-full flex flex-row flex-1 items-center justify-between bg-bgInputSearch rounded-full hover:bg-bgHover hover:shadow-sm hover:shadown-bgHover">
                     <span className="flex-none ps-4 text-xl text-textPrimary cursor-pointer hover:text-textSecondary">
                         <IoIosSearch />
                     </span>
@@ -35,7 +35,7 @@ const Header = () => {
                         <TbLineScan />
                     </span>
                 </div>
-                <div className="flex flex-row flex-none divide-x gap-8">
+                <div className="lg:flex lg:flex-row flex-none divide-x gap-8 sm:hidden">
                     <div className="flex flex-row text-sm items-center justify-center font-medium gap-x-8">
                         <span className="cursor-pointer text-textPrimary hover:text-textSecondary">Explore</span>
                         <span className="cursor-pointer text-textPrimary hover:text-textSecondary">Advertise</span>
@@ -47,7 +47,7 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-            <button className="px-2 text-xl text-textPrimary">
+            <button className="px-2 flex-none text-xl text-textPrimary">
                 <FaBars />
             </button>
         </header>

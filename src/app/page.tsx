@@ -1,14 +1,21 @@
+"use client";
+
 import NavBar from "@/components/NavBar";
 import PhotoContainer from "@/components/PhotoContainer";
 import { FaSquarespace } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 import { TbLineScan } from "react-icons/tb";
+import React, { useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Pagination } from "swiper/modules";
 
 export default function Home() {
     return (
         <div className="w-full flex flex-col items-center justify-center">
             <NavBar />
-            <div className="w-full grid grid-cols-2 gap-6 px-5 mt-8">
+            <div className="w-full lg:grid sm:hidden grid-cols-2 gap-6 px-5 mt-8">
                 <div className="flex flex-col justify-end items-start gap-y-4">
                     <h1 className="text-40px font-bold leading-5 text-textSecondary">
                         Unsplash
@@ -62,7 +69,13 @@ export default function Home() {
                                 "url('https://pbs.twimg.com/media/DQUJQoWVwAIewSV?format=jpg&name=4096x4096')",
                         }}
                     >
-                        <div className="h-full w-full flex flex-col items-start justify-end p-5 text-white" style={{ background: 'linear-gradient(0deg,#000000a6,#0000 55%)' }}>
+                        <div
+                            className="h-full w-full flex flex-col items-start justify-end p-5 text-white"
+                            style={{
+                                background:
+                                    "linear-gradient(0deg,#000000a6,#0000 55%)",
+                            }}
+                        >
                             <h3 className="text-xs font-semibold">
                                 Discover Unsplash+
                             </h3>
@@ -75,6 +88,75 @@ export default function Home() {
                             </p>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div className="w-full px-2.5 md:flex lg:hidden flex-col gap-y-4">
+                <h1 className="text-2xl font-bold leading-5 text-textSecondary mt-10 mb-4">
+                    Unsplash
+                </h1>
+                <div className="w-full overflow-hidden flex flex-row items-center justify-between slider">
+                    <Swiper
+                        slidesPerView={"auto"}
+                        spaceBetween={30}
+                        className="w-full h-full"
+                    >
+                        <SwiperSlide>
+                            <div
+                                className="h-168 rounded-md bg-cover bg-center bg-no-repeat"
+                                style={{
+                                    backgroundImage:
+                                        "url('https://pbs.twimg.com/media/DQUJQoWVwAIewSV?format=jpg&name=4096x4096')",
+                                }}
+                            >
+                                <div
+                                    className="h-full w-full flex flex-col items-start justify-end p-5 text-white"
+                                    style={{
+                                        background:
+                                            "linear-gradient(0deg,#000000a6,#0000 55%)",
+                                    }}
+                                >
+                                    <h3 className="text-xs font-semibold">
+                                        Discover Unsplash+
+                                    </h3>
+                                    <p className="text-lg font-semibold">
+                                        Unlimited downloads.
+                                        <br />
+                                        Full legal protections.
+                                        <br />
+                                        No ads
+                                    </p>
+                                </div>
+                            </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <div className="flex flex-col h-168 bg-bgSection rounded-md p-5 items-start justify-between">
+                                <p className="text-lg font-medium text-textPrimary">
+                                    <strong className="text-textSecondary">
+                                        Yes, it’s really free.
+                                    </strong>
+                                    &nbsp; All images can be downloaded and used
+                                    for personal or commercial projects.
+                                </p>
+                                <p className="w-full underline text-15px text-textPrimary text-end">
+                                    Learn about our License
+                                </p>
+                            </div>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <div className="flex flex-col h-168 bg-bgSection rounded-md p-5 items-start justify-between">
+                                <p className="text-lg font-medium text-textPrimary">
+                                    <strong className="text-textSecondary">
+                                        Yes, it’s really free.
+                                    </strong>
+                                    &nbsp; All images can be downloaded and used
+                                    for personal or commercial projects.
+                                </p>
+                                <p className="w-full underline text-15px text-textPrimary text-end">
+                                    Learn about our License
+                                </p>
+                            </div>
+                        </SwiperSlide>
+                    </Swiper>
                 </div>
             </div>
             <PhotoContainer />

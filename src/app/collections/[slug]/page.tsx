@@ -1,5 +1,6 @@
 "use client";
 
+import CollectionItem from "@/components/CollectionItem";
 import ImageItem from "@/components/ImageItem";
 import { useEffect, useState } from "react";
 import { IoIosShareAlt, IoIosMore } from "react-icons/io";
@@ -8,6 +9,7 @@ interface Photo {
     id: string;
     urls: {
         raw: string;
+        full: string;
     };
     user: {
         profile_image: {
@@ -15,6 +17,10 @@ interface Photo {
         };
         username: string;
     };
+}
+
+interface Tag {
+    title: string;
 }
 
 interface Collection {
@@ -27,6 +33,8 @@ interface Collection {
         };
     };
     total_photos: number;
+    tags: Tag[];
+    preview_photos: Photo[];
 }
 
 export default function CollectionDetail({
@@ -37,7 +45,9 @@ export default function CollectionDetail({
     const client_id = process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID;
     const [collection, setCollection] = useState<Collection | null>(null);
     const [photos, setPhotos] = useState<Photo[]>([]);
-    const [collectionRelated, setCollectionRelated] = useState<Collection[]>([]);
+    const [collectionRelated, setCollectionRelated] = useState<Collection[]>(
+        []
+    );
 
     useEffect(() => {
         fetch(
@@ -110,7 +120,20 @@ export default function CollectionDetail({
                         />
                     ))}
             </div>
-            <div></div>
+            <h2 className="text-2xl text-textSecondary font-semibold mt-16 mb-6">You might also like</h2>
+            <div className="w-full grid grid-cols-3 gap-x-6 gap-y-12">
+                {collectionRelated &&
+                    collectionRelated.map((collection, index) => (
+                        <CollectionItem
+                            key={index}
+                            title={collection.title}
+                            total_photos={collection.total_photos}
+                            name={collection.user.name}
+                            tags={collection.tags.slice(0, 3)}
+                            preview_photos={collection.preview_photos}
+                        />
+                    ))}
+            </div>
         </div>
     );
 }

@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ImageItem from "./ImageItem";
+import { FaHeart, FaChevronDown } from "react-icons/fa";
+import { LuPlus } from "react-icons/lu";
 
 interface Photo {
     id: string;
@@ -47,7 +49,7 @@ const PhotoContainer: React.FC = () => {
             loader={<h4>Loading...</h4>}
             endMessage={<p>No more images to load</p>}
         >
-            <div className="w-full columns-3 gap-4 space-y-4 px-5 mt-10">
+            <div className="w-full lg:block sm:hidden columns-3 gap-4 space-y-4 lg:px-5 sm:px-2.5 mt-10">
                 {dataPhotos &&
                     dataPhotos?.map((photo, index) => (
                         <ImageItem
@@ -56,6 +58,42 @@ const PhotoContainer: React.FC = () => {
                             userImageUrl={photo.user.profile_image.small}
                             username={photo.user.name}
                         />
+                    ))}
+            </div>
+            <div className="w-full mt-10 lg:hidden sm:block">
+                {dataPhotos &&
+                    dataPhotos?.map((photo, index) => (
+                        <div className="flex flex-col mb-12" key={index}>
+                            <div className="flex flex-row items-center justify-start px-2.5 gap-x-2 mb-2">
+                                <img
+                                    src={photo.user.profile_image.small}
+                                    alt=""
+                                    className="w-8 h-8 rounded-full object-cover"
+                                />
+                                <p className="text-15px overflow-hidden font-medium">
+                                    {photo.user.name}
+                                </p>
+                            </div>
+                            <img src={photo.urls.small} />
+                            <div className="flex flex-row items-center justify-between px-2.5 mt-4">
+                                <div className="flex flex-row items-center justify-center gap-x-2">
+                                    <button className="px-3 py-2 text-base text-textPrimary rounded shadow bg-white border h-8 w-10 border-borderColor">
+                                        <FaHeart />
+                                    </button>
+                                    <button className="px-3 py-2 text-base text-textPrimary rounded shadow bg-white border h-8 w-10 border-borderColor">
+                                        <LuPlus />
+                                    </button>
+                                </div>
+                                <div className="flex flex-row items-center justify-center rounded-md shadow">
+                                    <button className="h-8 inline-flex items-center justify-center font-medium bg-white text-sm text-textPrimary border translate-x-px border-borderColor rounded-s px-3 py-2 hover:text-textSecondary hover:border-textSecondary">
+                                        Download
+                                    </button>
+                                    <button className="h-8 inline-flex items-center justify-center text-sm bg-white text-textPrimary border border-borderColor rounded-e px-3 py-2 hover:text-textSecondary hover:border-textSecondary hover:z-10">
+                                        <FaChevronDown />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     ))}
             </div>
         </InfiniteScroll>
