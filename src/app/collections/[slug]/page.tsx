@@ -57,9 +57,6 @@ export default function CollectionDetail({
             .then((data) => {
                 setCollection(data);
             });
-    }, [params.slug]);
-
-    useEffect(() => {
         fetch(
             `https://api.unsplash.com/collections/${params.slug}/photos?client_id=${client_id}`
         )
@@ -75,9 +72,7 @@ export default function CollectionDetail({
             .then((data) => {
                 setCollectionRelated(data);
             });
-    }, []);
-
-    console.log(collection);
+    }, [params.slug]);
 
     return (
         <div className="w-full px-5 mt-28 flex flex-col">
@@ -120,7 +115,9 @@ export default function CollectionDetail({
                         />
                     ))}
             </div>
-            <h2 className="text-2xl text-textSecondary font-semibold mt-16 mb-6">You might also like</h2>
+            <h2 className="text-2xl text-textSecondary font-semibold mt-16 mb-6">
+                You might also like
+            </h2>
             <div className="w-full grid grid-cols-3 gap-x-6 gap-y-12">
                 {collectionRelated &&
                     collectionRelated.map((collection, index) => (

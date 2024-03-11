@@ -50,7 +50,7 @@ export default function PhotoDetail({ params }: { params: { slug: string } }) {
             .then((data) => {
                 setPhoto(data);
             });
-    }, [params.slug]);
+    }, []);
 
     return (
         <div className="w-full flex flex-col items-center justify-center">

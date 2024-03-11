@@ -73,7 +73,7 @@ export default function UserProfile({
             .then((data) => {
                 setUser(data);
             });
-    }, [params.username]);
+    }, []);
 
     useEffect(() => {
         fetch(
