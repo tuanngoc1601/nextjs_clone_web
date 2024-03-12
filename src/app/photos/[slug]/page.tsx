@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { getImageDetail } from "@/api/unsplash";
 import { FaHeart, FaChevronDown } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import {
@@ -37,21 +38,22 @@ interface Photo {
 
 export default function PhotoDetail({ params }: { params: { slug: string } }) {
     const [photo, setPhoto] = useState<Photo | null>(null);
-    const client_id = process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID;
-    const ENPOINT = process.env.NEXT_PUBLIC_APP_BACKEND_URL;
 
     const createdAt = photo?.created_at
         ? new Date(photo?.created_at)
         : new Date();
 
     useEffect(() => {
-        fetch(
-            `${ENPOINT}/photos/${params.slug}?client_id=${client_id}`
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                setPhoto(data);
-            });
+        const getImage = async () => {
+            try {
+                const imageDetail = await getImageDetail(params.slug);
+                setPhoto(imageDetail);
+            } catch (err) {
+                console.log("Failed fetching image detail", err);
+            }
+        };
+
+        getImage();
     }, []);
 
     return (

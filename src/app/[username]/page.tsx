@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { getUserInfo, getUserPhotos } from "@/api/unsplash";
 import UserPhotoTabs from "@/components/UserPhotosTab";
 import ProfileInfo from "@/components/ProfileInfo";
 import ImageItem from "@/components/ImageItem";
@@ -52,41 +52,57 @@ export default function UserProfile({
 }: {
     params: { username: string };
 }) {
-    const client_id = process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID;
-    const ENPOINT = process.env.NEXT_PUBLIC_APP_BACKEND_URL;
     const [user, setUser] = useState<UserProfileProps | null>(null);
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(true);
     const perPage = 10;
+    const [initialLoad, setInitialLoad] = useState(true);
 
-    const loadMoreImages = () => {
-        setPage(page + 1);
+    const onScroll = () => {
+        const isEndPage =
+            window.scrollY + window.innerHeight >= document.body.offsetHeight;
+
+        if (isEndPage) {
+            setPage((prev) => prev + 1);
+        }
     };
 
     useEffect(() => {
-        if (!client_id || !params.username || !ENPOINT) {
-            return;
-        }
-        fetch(`${ENPOINT}/users/${params.username}?client_id=${client_id}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setUser(data);
-            });
-    }, []);
+        const fetchUserPhotos = async (username: string) => {
+            try {
+                const userPhotos = await getUserPhotos(username, perPage, page);
+                if (initialLoad) {
+                    setInitialLoad(false);
+                    setPhotos(userPhotos);
+                } else {
+                    setPhotos((prev) => [...prev, ...userPhotos]);
+                }
+            } catch (err) {
+                console.log("Failed fetching photos", err);
+            }
+        };
+
+        fetchUserPhotos(params.username);
+    }, [page]);
 
     useEffect(() => {
-        if (!client_id || !params.username || !ENPOINT) {
-            return;
-        }
-        fetch(
-            `${ENPOINT}.com/users/${params.username}/photos?client_id=${client_id}&per_page=${perPage}&page=${page}`
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                setPhotos((prev) => [...prev, ...data]);
-            });
-    }, [page]);
+        const fetchUserData = async (username: string) => {
+            try {
+                const dataUser = await getUserInfo(username);
+                setUser(dataUser);
+            } catch (err) {
+                console.log("Error fetching infomation:", err);
+            }
+        };
+
+        fetchUserData(params.username);
+
+        window.addEventListener("scroll", onScroll);
+
+        return () => {
+            window.removeEventListener("scroll", onScroll);
+        };
+    }, []);
 
     return (
         <div className="w-full mt-28">
@@ -97,25 +113,17 @@ export default function UserProfile({
                 total_collections={user?.total_collections || 0}
             />
 
-            <InfiniteScroll
-                dataLength={photos.length}
-                next={loadMoreImages}
-                hasMore={hasMore}
-                loader={<h4>Loading...</h4>}
-                endMessage={<p>No more images to load</p>}
-            >
-                <div className="w-full columns-3 gap-4 space-y-4 px-5">
-                    {photos &&
-                        photos.map((photo, index) => (
-                            <ImageItem
-                                key={index}
-                                imageUrl={photo.urls?.raw}
-                                userImageUrl={photo.user?.profile_image?.small}
-                                username={photo.user?.name}
-                            />
-                        ))}
-                </div>
-            </InfiniteScroll>
+            <div className="w-full columns-3 gap-4 space-y-4 px-5">
+                {photos &&
+                    photos.map((photo, index) => (
+                        <ImageItem
+                            key={index}
+                            imageUrl={photo.urls?.raw}
+                            userImageUrl={photo.user?.profile_image?.small}
+                            username={photo.user?.name}
+                        />
+                    ))}
+            </div>
         </div>
     );
 }

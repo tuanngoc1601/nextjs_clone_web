@@ -3,6 +3,11 @@
 import CollectionItem from "@/components/CollectionItem";
 import ImageItem from "@/components/ImageItem";
 import Image from "next/image";
+import {
+    getUserCollections,
+    getPhotoCollection,
+    getRelatedCollections,
+} from "@/api/unsplash";
 import { useEffect, useState } from "react";
 import { IoIosShareAlt, IoIosMore } from "react-icons/io";
 
@@ -43,41 +48,46 @@ export default function CollectionDetail({
 }: {
     params: { slug: string };
 }) {
-    const client_id = process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID;
-    const ENPOINT = process.env.NEXT_PUBLIC_APP_BACKEND_URL;
     const [collection, setCollection] = useState<Collection | null>(null);
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [collectionRelated, setCollectionRelated] = useState<Collection[]>(
         []
     );
 
-    useEffect(() => {
-        if (!params.slug || !client_id) {
-            return;
+    const getCollections = async () => {
+        try {
+            const userCollections = await getUserCollections(params.slug);
+
+            setCollection(userCollections);
+        } catch (err) {
+            console.error("Failed fetching user's collections", err);
         }
-        fetch(
-            `${ENPOINT}/collections/${params.slug}?client_id=${client_id}`
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                setCollection(data);
-            });
+    };
 
-        fetch(
-            `${ENPOINT}/collections/${params.slug}/photos?client_id=${client_id}`
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                setPhotos(data);
-            });
+    const getPhotos = async () => {
+        try {
+            const photoColllection = await getPhotoCollection(params.slug);
 
-        fetch(
-            `${ENPOINT}/collections/${params.slug}/related?client_id=${client_id}`
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                setCollectionRelated(data);
-            });
+            setPhotos(photoColllection);
+        } catch (err) {
+            console.error("Failed fetching photo collection", err);
+        }
+    };
+
+    const getCollectionRelated = async () => {
+        try {
+            const data = await getRelatedCollections(params.slug);
+
+            setCollectionRelated(data);
+        } catch (err) {
+            console.error("Failed fetching related collections", err);
+        }
+    };
+
+    useEffect(() => {
+        getCollections();
+        getPhotos();
+        getCollectionRelated();
     }, []);
 
     return (

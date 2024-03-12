@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { MdPhotoSizeSelectActual } from "react-icons/md";
 import { FaHeart } from "react-icons/fa6";
 import { MdCollections } from "react-icons/md";
