@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { GetServerSideProps } from "next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import UserPhotoTabs from "@/components/UserPhotosTab";
 import ProfileInfo from "@/components/ProfileInfo";
-import { FaHeart } from "react-icons/fa";
-import { LuPlus } from "react-icons/lu";
-import { FaArrowDown } from "react-icons/fa6";
 import ImageItem from "@/components/ImageItem";
 
 interface Custom {
@@ -55,6 +53,7 @@ export default function UserProfile({
     params: { username: string };
 }) {
     const client_id = process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID;
+    const ENPOINT = process.env.NEXT_PUBLIC_APP_BACKEND_URL;
     const [user, setUser] = useState<UserProfileProps | null>(null);
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [page, setPage] = useState(1);
@@ -66,9 +65,10 @@ export default function UserProfile({
     };
 
     useEffect(() => {
-        fetch(
-            `https://api.unsplash.com/users/${params.username}?client_id=${client_id}`
-        )
+        if (!client_id || !params.username || !ENPOINT) {
+            return;
+        }
+        fetch(`${ENPOINT}/users/${params.username}?client_id=${client_id}`)
             .then((res) => res.json())
             .then((data) => {
                 setUser(data);
@@ -76,8 +76,11 @@ export default function UserProfile({
     }, []);
 
     useEffect(() => {
+        if (!client_id || !params.username || !ENPOINT) {
+            return;
+        }
         fetch(
-            `https://api.unsplash.com/users/${params.username}/photos?client_id=${client_id}&per_page=${perPage}&page=${page}`
+            `${ENPOINT}.com/users/${params.username}/photos?client_id=${client_id}&per_page=${perPage}&page=${page}`
         )
             .then((res) => res.json())
             .then((data) => {
@@ -106,9 +109,9 @@ export default function UserProfile({
                         photos.map((photo, index) => (
                             <ImageItem
                                 key={index}
-                                imageUrl={photo.urls.raw}
-                                userImageUrl={photo.user.profile_image.small}
-                                username={photo.user.name}
+                                imageUrl={photo.urls?.raw}
+                                userImageUrl={photo.user?.profile_image?.small}
+                                username={photo.user?.name}
                             />
                         ))}
                 </div>

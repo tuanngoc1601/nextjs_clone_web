@@ -5,6 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import ImageItem from "./ImageItem";
 import { FaHeart, FaChevronDown } from "react-icons/fa";
 import { LuPlus } from "react-icons/lu";
+import Image from "next/image";
 
 interface Photo {
     id: string;
@@ -21,7 +22,7 @@ interface Photo {
 
 const PhotoContainer: React.FC = () => {
     const client_id = process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID;
-    const ENPOINT = process.env.NEXT_APP_BACKEND_URL;
+    const ENPOINT = process.env.NEXT_PUBLIC_APP_BACKEND_URL;
     const [perPage, setPerPage] = useState(30);
     const [page, setPage] = useState(1);
     const [dataPhotos, setDataPhotos] = useState<Photo[]>([]);
@@ -33,7 +34,7 @@ const PhotoContainer: React.FC = () => {
 
     useEffect(() => {
         fetch(
-            `https://api.unsplash.com/photos?client_id=${client_id}&per_page=${perPage}&page=${page}`
+            `${ENPOINT}/photos?client_id=${client_id}&per_page=${perPage}&page=${page}`
         )
             .then((res) => res.json())
             .then((data) => {
@@ -54,9 +55,9 @@ const PhotoContainer: React.FC = () => {
                     dataPhotos?.map((photo, index) => (
                         <ImageItem
                             key={index}
-                            imageUrl={photo.urls.small}
-                            userImageUrl={photo.user.profile_image.small}
-                            username={photo.user.name}
+                            imageUrl={photo.urls?.small}
+                            userImageUrl={photo.user?.profile_image?.small}
+                            username={photo.user?.name}
                         />
                     ))}
             </div>
@@ -65,16 +66,18 @@ const PhotoContainer: React.FC = () => {
                     dataPhotos?.map((photo, index) => (
                         <div className="flex flex-col mb-12" key={index}>
                             <div className="flex flex-row items-center justify-start px-2.5 gap-x-2 mb-2">
-                                <img
-                                    src={photo.user.profile_image.small}
+                                <Image
+                                    src={photo.user?.profile_image?.small}
                                     alt=""
-                                    className="w-8 h-8 rounded-full object-cover"
+                                    width={32}
+                                    height={32}
+                                    className="rounded-full object-cover"
                                 />
                                 <p className="text-15px overflow-hidden font-medium">
-                                    {photo.user.name}
+                                    {photo.user?.name}
                                 </p>
                             </div>
-                            <img src={photo.urls.small} />
+                            <Image src={photo.urls?.small} alt="" width={500} height={500} />
                             <div className="flex flex-row items-center justify-between px-2.5 mt-4">
                                 <div className="flex flex-row items-center justify-center gap-x-2">
                                     <button className="px-3 py-2 text-base text-textPrimary rounded shadow bg-white border h-8 w-10 border-borderColor">

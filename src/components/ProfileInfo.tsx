@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import Image from "next/image";
 import { IoIosMore } from "react-icons/io";
 import { IoLocationSharp } from "react-icons/io5";
 import { IoIosLink } from "react-icons/io";
@@ -34,12 +35,12 @@ interface ProfileProps {
 const ProfileInfo: React.FC<ProfileProps> = React.memo((props) => {
     return (
         <div className="flex flex-row w-7/12 mx-auto items-start justify-center gap-x-10">
-            <img
-                src={
-                    "https://images.unsplash.com/profile-1592328433409-d9ce8a5333eaimage?bg=fff&crop=faces&dpr=2&h=150&w=150&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
-                }
+            <Image
+                src={props?.user?.profile_image?.large}
                 alt=""
-                className="w-150 h-150 rounded-full object-cover"
+                width={150}
+                height={150}
+                className="rounded-full object-cover"
             />
             <div className="flex flex-col items-start justify-start">
                 <button className="bg-bgSection py-1 px-3 flex flex-row items-center justify-center gap-2 rounded-md text-sm text-textSecondary">
@@ -72,7 +73,7 @@ const ProfileInfo: React.FC<ProfileProps> = React.memo((props) => {
                 </a>
                 <a className="py-1 text-15px flex flex-row items-center justify-center gap-x-2 text-textPrimary hover:text-textSecondary cursor-pointer mt-1">
                     <IoIosLink />
-                    Connect with {props.user?.first_name}
+                    Connect with {props?.user?.first_name}
                     <FaCaretDown />
                 </a>
                 <p className="text-textSecondary text-15px">Interests</p>
@@ -82,7 +83,7 @@ const ProfileInfo: React.FC<ProfileProps> = React.memo((props) => {
                             key={index}
                             className="text-iconColor text-sm py-1 px-2 rounded capitalize bg-bgInputSearch no-underline cursor-pointer hover:text-textSecondary hover:bg-bgHoverItem"
                         >
-                            {item.source?.title || item?.title}
+                            {item?.source?.title || item?.title}
                         </a>
                     ))}
                 </div>

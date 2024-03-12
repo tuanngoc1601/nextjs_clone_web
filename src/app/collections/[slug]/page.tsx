@@ -2,6 +2,7 @@
 
 import CollectionItem from "@/components/CollectionItem";
 import ImageItem from "@/components/ImageItem";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoIosShareAlt, IoIosMore } from "react-icons/io";
 
@@ -43,6 +44,7 @@ export default function CollectionDetail({
     params: { slug: string };
 }) {
     const client_id = process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID;
+    const ENPOINT = process.env.NEXT_PUBLIC_APP_BACKEND_URL;
     const [collection, setCollection] = useState<Collection | null>(null);
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [collectionRelated, setCollectionRelated] = useState<Collection[]>(
@@ -50,15 +52,19 @@ export default function CollectionDetail({
     );
 
     useEffect(() => {
+        if (!params.slug || !client_id) {
+            return;
+        }
         fetch(
-            `https://api.unsplash.com/collections/${params.slug}?client_id=${client_id}`
+            `${ENPOINT}/collections/${params.slug}?client_id=${client_id}`
         )
             .then((res) => res.json())
             .then((data) => {
                 setCollection(data);
             });
+
         fetch(
-            `https://api.unsplash.com/collections/${params.slug}/photos?client_id=${client_id}`
+            `${ENPOINT}/collections/${params.slug}/photos?client_id=${client_id}`
         )
             .then((res) => res.json())
             .then((data) => {
@@ -66,13 +72,13 @@ export default function CollectionDetail({
             });
 
         fetch(
-            `https://api.unsplash.com/collections/${params.slug}/related?client_id=${client_id}`
+            `${ENPOINT}/collections/${params.slug}/related?client_id=${client_id}`
         )
             .then((res) => res.json())
             .then((data) => {
                 setCollectionRelated(data);
             });
-    }, [params.slug]);
+    }, []);
 
     return (
         <div className="w-full px-5 mt-28 flex flex-col">
@@ -81,13 +87,15 @@ export default function CollectionDetail({
                 <div>
                     <p className="text-lg mb-6">{collection?.description}</p>
                     <div className="flex flex-row items-center justify-start gap-x-2">
-                        <img
-                            src={collection?.user.profile_image.small}
+                        <Image
+                            src={collection?.user?.profile_image?.small ?? ""}
                             alt=""
-                            className="h-8 w-8 rounded-full"
+                            width={32}
+                            height={32}
+                            className="rounded-full"
                         />
                         <p className="block leading-5 overflow-hidden whitespace-nowrap font-medium">
-                            {collection?.user.name}
+                            {collection?.user?.name}
                         </p>
                     </div>
                 </div>
@@ -102,16 +110,16 @@ export default function CollectionDetail({
                 </div>
             </div>
             <p className="text-15px text-textSecondary mb-6 leading-8">
-                {collection?.total_photos} photos
+                {collection?.total_photos || 0} photos
             </p>
             <div className="w-full columns-3 gap-4 space-y-4">
                 {photos &&
                     photos?.map((photo, index) => (
                         <ImageItem
                             key={index}
-                            imageUrl={photo.urls.raw}
-                            userImageUrl={photo.user.profile_image.small}
-                            username={photo.user.username}
+                            imageUrl={photo.urls?.raw}
+                            userImageUrl={photo.user?.profile_image?.small}
+                            username={photo.user?.username}
                         />
                     ))}
             </div>
@@ -125,7 +133,7 @@ export default function CollectionDetail({
                             key={index}
                             title={collection.title}
                             total_photos={collection.total_photos}
-                            name={collection.user.name}
+                            name={collection.user?.name}
                             tags={collection.tags.slice(0, 3)}
                             preview_photos={collection.preview_photos}
                         />

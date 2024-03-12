@@ -29,6 +29,7 @@ interface Collection {
 
 export default function CollectionPage() {
     const client_id = process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID;
+    const ENPOINT = process.env.NEXT_PUBLIC_APP_BACKEND_URL;
     const [perPage, setPerPage] = useState(8);
     const [collections, setCollections] = useState<Collection[]>([]);
     const [page, setPage] = useState(1);
@@ -40,7 +41,7 @@ export default function CollectionPage() {
 
     useEffect(() => {
         fetch(
-            `https://api.unsplash.com/collections?client_id=${client_id}&per_page=${perPage}&page=${page}`
+            `${ENPOINT}/collections?client_id=${client_id}&per_page=${perPage}&page=${page}`
         )
             .then((res) => res.json())
             .then((data) => {
@@ -79,7 +80,7 @@ export default function CollectionPage() {
                                 key={index}
                                 title={collection.title}
                                 total_photos={collection.total_photos}
-                                name={collection.user.name}
+                                name={collection.user?.name}
                                 tags={collection.tags.slice(0, 3)}
                                 preview_photos={collection.preview_photos}
                             />

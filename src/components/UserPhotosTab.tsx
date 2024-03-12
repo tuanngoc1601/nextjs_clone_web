@@ -33,7 +33,7 @@ const UserPhotoTabs: React.FC<PhotoDataProps> = (props) => {
                     <MdPhotoSizeSelectActual />
                 </span>
                 Photos&nbsp;
-                {(props.total_photos / 1000).toFixed(1)}k
+                {(props?.total_photos / 1000).toFixed(1)}k
             </div>
             <div
                 className={`flex flex-row items-center justify-center gap-x-2 font-medium text-textPrimary text-sm  ${
@@ -47,7 +47,7 @@ const UserPhotoTabs: React.FC<PhotoDataProps> = (props) => {
                     <FaHeart />
                 </span>
                 Likes&nbsp;
-                {(props.total_likes / 1000).toFixed(0)}k
+                {(props?.total_likes / 1000).toFixed(0)}k
             </div>
             <div
                 className={`flex flex-row items-center justify-center gap-x-2 font-medium text-textPrimary text-sm  ${
@@ -61,7 +61,7 @@ const UserPhotoTabs: React.FC<PhotoDataProps> = (props) => {
                     <MdCollections />
                 </span>
                 Collections&nbsp;
-                {props.total_collections}
+                {props?.total_collections}
             </div>
         </div>
     );
