@@ -18,6 +18,7 @@ interface Photo {
         full: string;
     };
     user: {
+        name: string;
         profile_image: {
             small: string;
         };
@@ -30,6 +31,7 @@ interface Tag {
 }
 
 interface Collection {
+    id: string;
     title: string;
     description: string;
     user: {
@@ -46,7 +48,7 @@ interface Collection {
 export default function CollectionDetail({
     params,
 }: {
-    params: { slug: string };
+    params: { collectionId: string; slug: string };
 }) {
     const [collection, setCollection] = useState<Collection | null>(null);
     const [photos, setPhotos] = useState<Photo[]>([]);
@@ -56,7 +58,7 @@ export default function CollectionDetail({
 
     const getCollections = async () => {
         try {
-            const userCollections = await getUserCollections(params.slug);
+            const userCollections = await getUserCollections(params.collectionId);
 
             setCollection(userCollections);
         } catch (err) {
@@ -66,7 +68,7 @@ export default function CollectionDetail({
 
     const getPhotos = async () => {
         try {
-            const photoColllection = await getPhotoCollection(params.slug);
+            const photoColllection = await getPhotoCollection(params.collectionId);
 
             setPhotos(photoColllection);
         } catch (err) {
@@ -76,7 +78,7 @@ export default function CollectionDetail({
 
     const getCollectionRelated = async () => {
         try {
-            const data = await getRelatedCollections(params.slug);
+            const data = await getRelatedCollections(params.collectionId);
 
             setCollectionRelated(data);
         } catch (err) {
@@ -122,13 +124,14 @@ export default function CollectionDetail({
             <p className="text-15px text-textSecondary mb-6 leading-8">
                 {collection?.total_photos || 0} photos
             </p>
-            <div className="w-full columns-3 gap-4 space-y-4">
+            <div className="w-full columns-3 gap-4">
                 {photos &&
                     photos?.map((photo, index) => (
                         <ImageItem
                             key={index}
                             imageUrl={photo.urls?.raw}
                             userImageUrl={photo.user?.profile_image?.small}
+                            name={photo.user?.name}
                             username={photo.user?.username}
                         />
                     ))}
@@ -141,6 +144,7 @@ export default function CollectionDetail({
                     collectionRelated.map((collection, index) => (
                         <CollectionItem
                             key={index}
+                            id={collection.id}
                             title={collection.title}
                             total_photos={collection.total_photos}
                             name={collection.user?.name}

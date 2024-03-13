@@ -16,7 +16,9 @@ interface Photo {
         name: string;
         profile_image: {
             small: string;
+            large: string;
         };
+        username: string;
     };
 }
 
@@ -28,7 +30,7 @@ const PhotoContainer: React.FC = () => {
 
     const onScroll = () => {
         const isEndPage =
-            window.scrollY + window.innerHeight >= document.body.offsetHeight;
+            window.scrollY + window.innerHeight >= document.documentElement.scrollHeight;
 
         if (isEndPage) {
             setPage((prev) => prev + 1);
@@ -64,14 +66,15 @@ const PhotoContainer: React.FC = () => {
 
     return (
         <>
-            <div className="w-full lg:block sm:hidden columns-3 gap-4 space-y-4 lg:px-5 sm:px-2.5 mt-10">
+            <div className="w-full lg:block sm:hidden columns-3 gap-4 lg:px-5 sm:px-2.5 mt-10">
                 {dataPhotos &&
                     dataPhotos?.map((photo, index) => (
                         <ImageItem
                             key={index}
                             imageUrl={photo.urls?.small}
-                            userImageUrl={photo.user?.profile_image?.small}
-                            username={photo.user?.name}
+                            userImageUrl={photo.user?.profile_image?.large}
+                            name={photo.user?.name}
+                            username={photo.user?.username}
                         />
                     ))}
             </div>

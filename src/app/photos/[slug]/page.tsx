@@ -65,7 +65,7 @@ export default function PhotoDetail({ params }: { params: { slug: string } }) {
                         alt=""
                         width={32}
                         height={32}
-                        className="rounded-ful cursor-pointer"
+                        className="rounded-full cursor-pointer"
                     />
                     <div className="flex flex-col overflow-hidden whitespace-nowrap">
                         <h3 className="block text-15px leading-5 font-medium text-textSecondary cursor-pointer">

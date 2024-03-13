@@ -17,6 +17,7 @@ body {
   height: max-content;
   position: relative;
   display: inline-block;
+  margin: 6px 0;
 }
 
 .image-container:hover .overlay {
@@ -32,10 +33,6 @@ body {
   background-color: rgba(0, 0, 0, 0.2);
   opacity: 0;
   transition: opacity 0.3s ease;
-}
-
-.infinite-scroll-component__outerdiv {
-  width: 100% !important;
 }
 
 .nav-slider .swiper-slide {

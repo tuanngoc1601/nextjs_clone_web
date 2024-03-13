@@ -44,6 +44,7 @@ interface Photo {
         profile_image: {
             small: string;
         };
+        username: string;
     };
 }
 
@@ -60,7 +61,7 @@ export default function UserProfile({
 
     const onScroll = () => {
         const isEndPage =
-            window.scrollY + window.innerHeight >= document.body.offsetHeight;
+            window.scrollY + window.innerHeight >= document.documentElement.scrollHeight;
 
         if (isEndPage) {
             setPage((prev) => prev + 1);
@@ -113,14 +114,15 @@ export default function UserProfile({
                 total_collections={user?.total_collections || 0}
             />
 
-            <div className="w-full columns-3 gap-4 space-y-4 px-5">
+            <div className="w-full columns-3 gap-4 px-5">
                 {photos &&
                     photos.map((photo, index) => (
                         <ImageItem
                             key={index}
                             imageUrl={photo.urls?.raw}
                             userImageUrl={photo.user?.profile_image?.small}
-                            username={photo.user?.name}
+                            name={photo.user?.name}
+                            username={photo.user?.username}
                         />
                     ))}
             </div>

@@ -18,6 +18,7 @@ interface Photo {
 }
 
 interface Collection {
+    id: string;
     title: string;
     total_photos: number;
     user: {
@@ -91,6 +92,7 @@ export default function CollectionPage() {
                     collections.map((collection, index) => (
                         <CollectionItem
                             key={index}
+                            id={collection.id}
                             title={collection.title}
                             total_photos={collection.total_photos}
                             name={collection.user?.name}
