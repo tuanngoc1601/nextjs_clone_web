@@ -84,7 +84,7 @@ const PhotoContainer: React.FC = () => {
                         <div className="flex flex-col mb-12" key={index}>
                             <div className="flex flex-row items-center justify-start px-2.5 gap-x-2 mb-2">
                                 <Image
-                                    src={photo.user?.profile_image?.small}
+                                    src={photo.user?.profile_image?.large}
                                     alt=""
                                     width={32}
                                     height={32}

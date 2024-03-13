@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { GetServerSideProps } from "next";
 import { getUserInfo, getUserPhotos } from "@/api/unsplash";
 import UserPhotoTabs from "@/components/UserPhotosTab";
 import ProfileInfo from "@/components/ProfileInfo";
