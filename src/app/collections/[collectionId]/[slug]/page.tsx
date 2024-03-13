@@ -1,96 +1,37 @@
-"use client";
-
+import React from "react";
 import CollectionItem from "@/components/CollectionItem";
-import ImageItem from "@/components/ImageItem";
 import Image from "next/image";
-import {
-    getUserCollections,
-    getPhotoCollection,
-    getRelatedCollections,
-} from "@/api/unsplash";
-import { useEffect, useState } from "react";
+import { getCollections, getRelatedCollections } from "@/api/unsplash";
 import { IoIosShareAlt, IoIosMore } from "react-icons/io";
+import CollectionPhotos from "@/components/CollectionPhotos";
 
-interface Photo {
-    id: string;
-    urls: {
-        raw: string;
-        full: string;
-    };
-    user: {
-        name: string;
-        profile_image: {
-            small: string;
-        };
-        username: string;
-    };
-}
+export const getServerCollectionProps = async (collectionId: string) => {
+    try {
+        const collection = await getCollections(collectionId);
+        return collection;
+    } catch (err) {
+        console.error("Failed fetching data", err);
+    }
+};
 
-interface Tag {
-    title: string;
-}
+export const getServerCollectionRelatedProps = async (collectionId: string) => {
+    try {
+        const collectionRelated = await getRelatedCollections(collectionId);
+        return collectionRelated;
+    } catch (err) {
+        console.error("Failed fetching data", err);
+    }
+};
 
-interface Collection {
-    id: string;
-    title: string;
-    description: string;
-    user: {
-        name: string;
-        profile_image: {
-            small: string;
-        };
-    };
-    total_photos: number;
-    tags: Tag[];
-    preview_photos: Photo[];
-}
-
-export default function CollectionDetail({
+export default async function CollectionDetail({
     params,
 }: {
     params: { collectionId: string; slug: string };
 }) {
-    const [collection, setCollection] = useState<Collection | null>(null);
-    const [photos, setPhotos] = useState<Photo[]>([]);
-    const [collectionRelated, setCollectionRelated] = useState<Collection[]>(
-        []
+    const collection = await getServerCollectionProps(params.collectionId);
+    const collectionRelated = await getServerCollectionRelatedProps(
+        params.collectionId
     );
-
-    const getCollections = async () => {
-        try {
-            const userCollections = await getUserCollections(params.collectionId);
-
-            setCollection(userCollections);
-        } catch (err) {
-            console.error("Failed fetching user's collections", err);
-        }
-    };
-
-    const getPhotos = async () => {
-        try {
-            const photoColllection = await getPhotoCollection(params.collectionId);
-
-            setPhotos(photoColllection);
-        } catch (err) {
-            console.error("Failed fetching photo collection", err);
-        }
-    };
-
-    const getCollectionRelated = async () => {
-        try {
-            const data = await getRelatedCollections(params.collectionId);
-
-            setCollectionRelated(data);
-        } catch (err) {
-            console.error("Failed fetching related collections", err);
-        }
-    };
-
-    useEffect(() => {
-        getCollections();
-        getPhotos();
-        getCollectionRelated();
-    }, []);
 
     return (
         <div className="w-full px-5 mt-28 flex flex-col">
@@ -124,24 +65,13 @@ export default function CollectionDetail({
             <p className="text-15px text-textSecondary mb-6 leading-8">
                 {collection?.total_photos || 0} photos
             </p>
-            <div className="w-full columns-3 gap-4">
-                {photos &&
-                    photos?.map((photo, index) => (
-                        <ImageItem
-                            key={index}
-                            imageUrl={photo.urls?.raw}
-                            userImageUrl={photo.user?.profile_image?.small}
-                            name={photo.user?.name}
-                            username={photo.user?.username}
-                        />
-                    ))}
-            </div>
+            <CollectionPhotos />
             <h2 className="text-2xl text-textSecondary font-semibold mt-16 mb-6">
                 You might also like
             </h2>
             <div className="w-full grid grid-cols-3 gap-x-6 gap-y-12">
                 {collectionRelated &&
-                    collectionRelated.map((collection, index) => (
+                    collectionRelated.map((collection: any, index: any) => (
                         <CollectionItem
                             key={index}
                             id={collection.id}

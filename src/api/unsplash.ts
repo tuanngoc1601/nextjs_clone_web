@@ -77,7 +77,7 @@ export const getListCollections = async (perPage: any, page: any) => {
     }
 };
 
-export const getUserCollections = async (slug: string) => {
+export const getCollections = async (slug: string) => {
     try {
         const response = await fetch(
             `${ENPOINT}/collections/${slug}?client_id=${client_id}`

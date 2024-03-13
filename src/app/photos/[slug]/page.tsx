@@ -1,7 +1,5 @@
-"use client";
-
+import React from "react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { getImageDetail } from "@/api/unsplash";
 import { FaHeart, FaChevronDown } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
@@ -11,50 +9,26 @@ import {
     IoIosMore,
 } from "react-icons/io";
 
-interface Tag {
-    title: string;
-    source: {
-        title: string;
-    };
-}
+export const getServerImageProps = async (id: string) => {
+    try {
+        const image = await getImageDetail(id);
+        return image;
+    } catch (err) {
+        console.log("failed fetching image data", err);
+    }
+};
 
-interface Photo {
-    user: {
-        name: string;
-        username: string;
-        profile_image: {
-            large: string;
-        };
-    };
-    created_at: string;
-    downloads: number;
-    views: number;
-    alt_description: string;
-    urls: {
-        full: string;
-    };
-    tags: Tag[];
-}
-
-export default function PhotoDetail({ params }: { params: { slug: string } }) {
-    const [photo, setPhoto] = useState<Photo | null>(null);
+export default async function PhotoDetail({
+    params,
+}: {
+    params: { slug: string };
+}) {
+    const id = params?.slug.split("-")[params?.slug.split("-").length - 1];
+    const photo = await getServerImageProps(id);
 
     const createdAt = photo?.created_at
         ? new Date(photo?.created_at)
         : new Date();
-
-    useEffect(() => {
-        const getImage = async () => {
-            try {
-                const imageDetail = await getImageDetail(params.slug);
-                setPhoto(imageDetail);
-            } catch (err) {
-                console.log("Failed fetching image detail", err);
-            }
-        };
-
-        getImage();
-    }, []);
 
     return (
         <div className="w-full flex flex-col items-center justify-center">
@@ -100,6 +74,7 @@ export default function PhotoDetail({ params }: { params: { slug: string } }) {
                     alt=""
                     width={870}
                     height={580}
+                    style={{ width: 'auto', height: '580px', objectFit: 'contain' }}
                 />
             </div>
             <div className="w-full px-5 flex flex-row items-center justify-between mt-8">
@@ -180,7 +155,7 @@ export default function PhotoDetail({ params }: { params: { slug: string } }) {
                     </span>
                 </p>
                 <div className="w-full flex flex-wrap items-center justify-start gap-2 my-8">
-                    {photo?.tags.map((tag, index) => (
+                    {photo?.tags.map((tag: any, index: any) => (
                         <a
                             key={index}
                             className="text-iconColor text-sm py-1 px-2 rounded capitalize bg-bgInputSearch no-underline cursor-pointer hover:text-textSecondary hover:bg-bgHoverItem"

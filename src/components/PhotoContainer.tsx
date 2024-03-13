@@ -9,6 +9,7 @@ import { getListPhotos } from "@/api/unsplash";
 
 interface Photo {
     id: string;
+    slug: string;
     urls: {
         small: string;
     };
@@ -71,6 +72,7 @@ const PhotoContainer: React.FC = () => {
                     dataPhotos?.map((photo, index) => (
                         <ImageItem
                             key={index}
+                            slug={photo.slug}
                             imageUrl={photo.urls?.small}
                             userImageUrl={photo.user?.profile_image?.large}
                             name={photo.user?.name}
