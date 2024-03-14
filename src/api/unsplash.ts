@@ -131,10 +131,10 @@ export const getRelatedCollections = async (slug: string) => {
     }
 };
 
-export const getImageDetail = async (slug: string) => {
+export const getImageDetail = async (id: string) => {
     try {
         const response = await fetch(
-            `${ENPOINT}/photos/${slug}?client_id=${client_id}`
+            `${ENPOINT}/photos/${id}?client_id=${client_id}`
         );
 
         if (!response.ok) {

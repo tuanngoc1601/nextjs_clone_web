@@ -14,7 +14,7 @@ export const getServerImageProps = async (id: string) => {
         const image = await getImageDetail(id);
         return image;
     } catch (err) {
-        console.log("failed fetching image data", err);
+        console.error("failed fetching image data", err);
     }
 };
 
@@ -23,7 +23,7 @@ export default async function PhotoDetail({
 }: {
     params: { slug: string };
 }) {
-    const id = params?.slug.split("-")[params?.slug.split("-").length - 1];
+    const id = params?.slug.slice(params?.slug.length - 11);
     const photo = await getServerImageProps(id);
 
     const createdAt = photo?.created_at
@@ -70,11 +70,15 @@ export default async function PhotoDetail({
 
             <div className="w-full px-5 flex flex-row items-center justify-center mt-4">
                 <Image
-                    src={photo?.urls?.full ?? ""}
+                    src={photo?.urls?.regular ?? ""}
                     alt=""
                     width={870}
                     height={580}
-                    style={{ width: 'auto', height: '580px', objectFit: 'contain' }}
+                    style={{
+                        width: "auto",
+                        height: "580px",
+                        objectFit: "contain",
+                    }}
                 />
             </div>
             <div className="w-full px-5 flex flex-row items-center justify-between mt-8">

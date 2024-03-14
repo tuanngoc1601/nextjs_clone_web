@@ -8,15 +8,17 @@ export const metadata = {
 };
 
 export default function RootLayout({
-    children,
+    children, modal
 }: {
     children: React.ReactNode;
+    modal: React.ReactNode;
 }) {
     return (
         <html lang="en">
             <body>
                 <main className="w-full min-h-screen h-auto flex flex-col items-center justify-start bg-white">
                     <Header />
+                    {modal}
                     {children}
                 </main>
             </body>

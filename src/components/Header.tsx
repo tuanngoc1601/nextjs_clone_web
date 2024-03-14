@@ -6,7 +6,7 @@ import { TbLineScan } from "react-icons/tb";
 
 const Header = () => {
     return (
-        <header className="w-full h-62 fixed backdrop-blur-md z-50 insert-x-0 top-0 flex flex-row items-center justify-between py-3 lg:px-5 sm:px-2.5 bg-white ">
+        <header className="w-full h-62 fixed backdrop-blur-md z-20 insert-x-0 top-0 flex flex-row items-center justify-between py-3 lg:px-5 sm:px-2.5 bg-white ">
             <Link className="flex-none" href={"/"}>
                 <svg
                     width="32"

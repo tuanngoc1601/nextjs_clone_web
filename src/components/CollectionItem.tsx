@@ -11,6 +11,7 @@ interface Photo {
     urls: {
         raw: string;
         full: string;
+        small: string;
     };
 }
 
@@ -31,7 +32,7 @@ const CollectionItem: React.FC<CollectionProps> = (props) => {
                     <div className="w-full aspect-10/7 flex overflow-hidden cursor-pointer rounded-lg mb-4">
                         <div className="bg-bgSection w-70% relative">
                             <Image
-                                src={props?.preview_photos[0]?.urls?.raw}
+                                src={props?.preview_photos[0]?.urls?.small}
                                 alt=""
                                 width={500}
                                 height={500}
@@ -41,7 +42,7 @@ const CollectionItem: React.FC<CollectionProps> = (props) => {
                         <div className="w-30% flex flex-col ms-0.5">
                             <div className="bg-bgSection mb-0.5 relative grow">
                                 <Image
-                                    src={props?.preview_photos[1]?.urls?.raw}
+                                    src={props?.preview_photos[1]?.urls?.small}
                                     alt=""
                                     width={500}
                                     height={500}
@@ -50,7 +51,7 @@ const CollectionItem: React.FC<CollectionProps> = (props) => {
                             </div>
                             <div className="bg-bgSection grow relative">
                                 <Image
-                                    src={props?.preview_photos[2]?.urls?.raw}
+                                    src={props?.preview_photos[2]?.urls?.small}
                                     alt=""
                                     width={500}
                                     height={500}

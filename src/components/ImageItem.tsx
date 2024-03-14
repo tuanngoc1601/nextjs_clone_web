@@ -28,7 +28,7 @@ const ImageItem: React.FC<ImageProps> = (props) => {
                         </button>
                     </div>
                     <div className="w-full flex flex-row items-center justify-between">
-                        <Link href={`/${props?.username}`}>
+                        <Link role="link" href={`/${props?.username}`}>
                             <div className="flex flex-row items-center justify-between gap-x-2 cursor-pointer">
                                 <Image
                                     src={props?.userImageUrl}

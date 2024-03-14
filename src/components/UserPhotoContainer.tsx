@@ -12,6 +12,7 @@ interface PhotoProps {
         raw: string;
         regular: string;
         full: string;
+        small: string;
     };
     user: {
         name: string;
@@ -51,7 +52,7 @@ const UserPhotoContainer: React.FC = () => {
                     setPhotos((prev) => [...prev, ...userPhotos]);
                 }
             } catch (err) {
-                console.log("Failed fetching photos", err);
+                console.error("Failed fetching photos", err);
             }
         };
 
@@ -73,7 +74,7 @@ const UserPhotoContainer: React.FC = () => {
                     <ImageItem
                         key={index}
                         slug={photo.slug}
-                        imageUrl={photo.urls?.raw}
+                        imageUrl={photo.urls?.small}
                         userImageUrl={photo.user?.profile_image?.large}
                         name={photo.user?.name}
                         username={photo.user?.username}

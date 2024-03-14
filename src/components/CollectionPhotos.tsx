@@ -11,11 +11,13 @@ interface Photo {
     urls: {
         raw: string;
         full: string;
+        small: string;
     };
     user: {
         name: string;
         profile_image: {
             small: string;
+            large: string;
         };
         username: string;
     };
@@ -45,8 +47,8 @@ const CollectionPhotos = () => {
                     <ImageItem
                         key={index}
                         slug={photo.slug}
-                        imageUrl={photo.urls?.raw}
-                        userImageUrl={photo.user?.profile_image?.small}
+                        imageUrl={photo.urls?.small}
+                        userImageUrl={photo.user?.profile_image?.large}
                         name={photo.user?.name}
                         username={photo.user?.username}
                     />

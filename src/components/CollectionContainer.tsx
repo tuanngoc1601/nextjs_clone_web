@@ -14,6 +14,7 @@ interface Photo {
     urls: {
         raw: string;
         full: string;
+        small: string;
     };
 }
 

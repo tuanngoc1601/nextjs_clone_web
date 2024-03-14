@@ -24,6 +24,7 @@ const config: Config = {
         870: "870px",
         "70%": "70%",
         "30%": "30%",
+        "90%": "90%",
       },
       height: {
         62: "62px",
@@ -31,6 +32,7 @@ const config: Config = {
         168: "168px",
         280: "280px",
         580: "580px",
+        "90%": "90%",
       },
       colors: {
         bgInputSearch: "#eeeeee",
@@ -49,6 +51,9 @@ const config: Config = {
       },
       margin: {
         '62px': "62px",
+      },
+      padding: {
+        '17.5': "70px",
       },
       aspectRatio: {
         '10/7': '10 / 7',

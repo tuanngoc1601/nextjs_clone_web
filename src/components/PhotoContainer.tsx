@@ -50,7 +50,7 @@ const PhotoContainer: React.FC = () => {
                     setDataPhotos((prev) => [...prev, ...data]);
                 }
             } catch (err) {
-                console.log("Error fetching photos:", err);
+                console.error("Error fetching photos:", err);
             }
         };
 
