@@ -6,7 +6,7 @@ import { TbLineScan } from "react-icons/tb";
 
 const Header = () => {
     return (
-        <header className="w-full h-62 fixed backdrop-blur-md z-20 insert-x-0 top-0 flex flex-row items-center justify-between py-3 lg:px-5 sm:px-2.5 bg-white ">
+        <header className="w-full h-62 fixed backdrop-blur-md z-20 insert-x-0 top-0 flex flex-row items-center justify-between py-3 md:px-5 sm:px-3 bg-white">
             <Link className="flex-none" href={"/"}>
                 <svg
                     width="32"
@@ -21,7 +21,7 @@ const Header = () => {
                     <path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path>
                 </svg>
             </Link>
-            <div className="w-full flex flex-row items-center justify-between px-4 gap-x-8">
+            <div className="w-full flex flex-row items-center justify-between px-4 lg:gap-x-8 md:gap-x-2">
                 <div className="w-full flex flex-row flex-1 items-center justify-between bg-bgInputSearch rounded-full hover:bg-bgHover hover:shadow-sm hover:shadown-bgHover">
                     <span className="flex-none ps-4 text-xl text-textPrimary cursor-pointer hover:text-textSecondary">
                         <IoIosSearch />
@@ -35,14 +35,14 @@ const Header = () => {
                         <TbLineScan />
                     </span>
                 </div>
-                <div className="lg:flex lg:flex-row flex-none divide-x gap-8 sm:hidden">
-                    <div className="flex flex-row text-sm items-center justify-center font-medium gap-x-8">
+                <div className="md:flex md:flex-row flex-none lg:divide-x gap-8 sm:hidden">
+                    <div className="lg:flex lg:flex-row text-sm md:hidden items-center justify-center font-medium gap-x-8">
                         <span className="cursor-pointer text-textPrimary hover:text-textSecondary">Explore</span>
                         <span className="cursor-pointer text-textPrimary hover:text-textSecondary">Advertise</span>
                         <span className="cursor-pointer text-textSecondary">Unsplash+</span>
                     </div>
                     <div className="flex flex-row items-center font-medium text-textPrimary justify-center gap-x-8">
-                        <span className="text-sm cursor-pointer ms-8 hover:text-textSecondary">Log in</span>
+                        <span className="text-sm cursor-pointer ms-5 hover:text-textSecondary">Log in</span>
                         <button className="text-sm border border-borderColor p-2 shadow-sm rounded-md hover:text-textSecondary hover:border-textSecondary">Submit a photo</button>
                     </div>
                 </div>

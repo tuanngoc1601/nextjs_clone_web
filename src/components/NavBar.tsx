@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,11 +10,11 @@ const NavBar = () => {
     const pathname = usePathname();
 
     return (
-        <nav className="sticky top-14 z-10 bg-white h-14 w-full flex flex-row items-center justify-center mt-62px sm:px-2.5 lg:px-5 gap-x-8 border-b border-borderColor">
-            <div className="h-full flex-none sm:hidden lg:flex flex-row items-center justify-center gap-x-4">
+        <nav className="sticky top-14 z-10 bg-white h-14 w-full flex flex-row items-center justify-center mt-62px sm:px-3 md:px-5 gap-x-8 border-b border-borderColor">
+            <div className="h-full flex-none sm:hidden md:flex flex-row items-center justify-center gap-x-4">
                 <Link href={"/"} legacyBehavior>
                     <a className="flex h-full text-sm font-medium items-center justify-center">
-                        Editorial
+                        Editorial   
                     </a>
                 </Link>
                 <Link href={"/unsplash"} legacyBehavior>
@@ -25,7 +23,7 @@ const NavBar = () => {
                     </a>
                 </Link>
             </div>
-            <div className="w-px h-8 flex-none sm:hidden lg:block bg-borderColor"></div>
+            <div className="w-px h-8 flex-none sm:hidden md:block bg-borderColor"></div>
             <div className="w-full overflow-hidden flex flex-row items-center justify-between nav-slider">
                 <Swiper
                     slidesPerView={'auto'}

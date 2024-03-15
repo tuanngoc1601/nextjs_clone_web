@@ -33,7 +33,7 @@ export default async function PhotoDetailModal({
     return (
         <Modal>
             <div className="w-full h-full overflow-auto flex flex-col items-center justify-center relative modal-content">
-                <div className="bg-white h-14 w-full flex flex-row items-center justify-between absolute top-0 px-5">
+                <div className="bg-white h-14 w-full flex flex-row items-center justify-between fixed top-3 px-5">
                     <div className="h-62 flex flex-row items-center justify-center gap-x-2">
                         <Image
                             src={photo?.user?.profile_image?.large ?? ""}

@@ -11,13 +11,17 @@ const config: Config = {
       screens: {
         'sm': '320px',
         'md': '768px',
-        'lg': '1024px',
-        'xl': '1280px',
+        'lg': '992px',
+        'xl': '1160px',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      gridTemplateColumns: {
+        "3lg": '1fr 280px 280px',
+        "2lg": '1fr 280px',
       },
       width: {
         150: "150px",
@@ -27,6 +31,7 @@ const config: Config = {
         "90%": "90%",
       },
       height: {
+        54: "54px",
         62: "62px",
         150: "150px",
         168: "168px",
@@ -51,6 +56,7 @@ const config: Config = {
       },
       margin: {
         '62px': "62px",
+        '50': "50px",
       },
       padding: {
         '17.5': "70px",

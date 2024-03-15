@@ -67,7 +67,7 @@ const PhotoContainer: React.FC = () => {
 
     return (
         <>
-            <div className="w-full lg:block sm:hidden columns-3 gap-4 lg:px-5 sm:px-2.5 mt-10">
+            <div className="w-full md:block sm:hidden lg:columns-3 md:columns-2 gap-4 md:px-5 sm:px-2.5 mt-10">
                 {dataPhotos &&
                     dataPhotos?.map((photo, index) => (
                         <ImageItem
@@ -83,8 +83,8 @@ const PhotoContainer: React.FC = () => {
             <div className="w-full mt-10 lg:hidden sm:block">
                 {dataPhotos &&
                     dataPhotos?.map((photo, index) => (
-                        <div className="flex flex-col mb-12" key={index}>
-                            <div className="flex flex-row items-center justify-start px-2.5 gap-x-2 mb-2">
+                        <div className="flex flex-col mb-50" key={index}>
+                            <div className="flex flex-row items-center justify-start px-3 gap-x-2 mb-3">
                                 <Image
                                     src={photo.user?.profile_image?.large}
                                     alt=""
@@ -101,8 +101,9 @@ const PhotoContainer: React.FC = () => {
                                 alt=""
                                 width={500}
                                 height={500}
+                                style={{ width: '100%' }}
                             />
-                            <div className="flex flex-row items-center justify-between px-2.5 mt-4">
+                            <div className="flex flex-row items-center justify-between px-3 mt-3">
                                 <div className="flex flex-row items-center justify-center gap-x-2">
                                     <button className="px-3 py-2 text-base text-textPrimary rounded shadow bg-white border h-8 w-10 border-borderColor">
                                         <FaHeart />
