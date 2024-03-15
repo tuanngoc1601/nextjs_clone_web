@@ -73,7 +73,7 @@ const CollectionContainer = () => {
     }, []);
 
     return (
-        <div className="grid grid-cols-3 gap-x-6 gap-y-12 mt-16">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-x-6 gap-y-12 mt-16">
             {collections &&
                 collections.map((collection, index) => (
                     <CollectionItem

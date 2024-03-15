@@ -71,13 +71,15 @@ export default async function PhotoDetail({
             </div>
 
             <div className="w-full md:px-5 sm:px-0 flex flex-row items-center justify-center md:mt-4">
-                <Image
-                    src={photo?.urls?.regular ?? ""}
-                    alt=""
-                    width={870}
-                    height={580}
-                    className="sm:w-full md:w-auto md:h-580 sm:h-auto object-contain"
-                />
+                <a href={photo?.urls?.full} target="_blank">
+                    <Image
+                        src={photo?.urls?.regular ?? ""}
+                        alt=""
+                        width={870}
+                        height={580}
+                        className="sm:w-full md:w-auto md:h-580 sm:h-auto object-contain cursor-zoom-in hover:bg-black hover:opacity-90 transition-all"
+                    />
+                </a>
             </div>
             <div className="w-full px-5 flex flex-row items-start justify-between mt-8">
                 <div className="w-1/2 grid md:grid-cols-3 sm:grid-rows-3 gap-4">
