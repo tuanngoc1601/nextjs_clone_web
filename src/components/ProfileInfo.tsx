@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import Image from "next/image";
 import { IoIosMore } from "react-icons/io";
-import { IoLocationSharp } from "react-icons/io5";
+import { IoLocationSharp, IoMail } from "react-icons/io5";
 import { IoIosLink } from "react-icons/io";
 import { FaCaretDown } from "react-icons/fa";
 
@@ -34,15 +34,25 @@ interface ProfileProps {
 
 const ProfileInfo: React.FC<ProfileProps> = React.memo((props) => {
     return (
-        <div className="flex flex-row w-7/12 mx-auto items-start justify-center gap-x-10">
-            <Image
-                src={props?.user?.profile_image?.large}
-                alt=""
-                width={150}
-                height={150}
-                className="rounded-full object-cover"
-            />
-            <div className="flex flex-col items-start justify-start">
+        <div className="sm:flex md:flex-row sm:flex-col lg:w-7/12 md:w-4/5 mx-auto items-start justify-center gap-x-10 sm:px-3">
+            <div className="sm:w-full md:w-150 flex flex-row flex-none items-start justify-between">
+                <Image
+                    src={props?.user?.profile_image?.large}
+                    alt=""
+                    width={150}
+                    height={150}
+                    className="rounded-full object-cover"
+                />
+                <div className="sm:flex sm:flex-row md:hidden items-start justify-end gap-x-2">
+                    <button className="py-2 px-3 bg-white rounded border border-borderColor text-textPrimary hover:text-textSecondary hover:border-textSecondary">
+                        <IoMail />
+                    </button>
+                    <button className="py-2 px-3 bg-white rounded border border-borderColor text-textPrimary hover:text-textSecondary hover:border-textSecondary">
+                        <IoIosMore />
+                    </button>
+                </div>
+            </div>
+            <div className="flex flex-col items-start justify-start mt-4">
                 <button className="bg-bgSection py-1 px-3 flex flex-row items-center justify-center gap-2 rounded-md text-sm text-textSecondary">
                     <svg
                         width="16"
@@ -56,11 +66,11 @@ const ProfileInfo: React.FC<ProfileProps> = React.memo((props) => {
                     </svg>
                     Subscriber
                 </button>
-                <div className="flex flex-row items-center justify-start gap-x-8">
-                    <h2 className="text-40px text-textSecondary font-bold">
+                <div className="flex flex-row items-center justify-start gap-x-8 mt-1">
+                    <h2 className="md:text-40px sm:text-28px text-textSecondary font-bold">
                         {props.user?.name}
                     </h2>
-                    <button className="py-2 px-3 bg-white rounded border border-borderColor text-textPrimary hover:text-textSecondary hover:border-textSecondary">
+                    <button className="py-2 px-3 sm:hidden bg-white rounded border border-borderColor text-textPrimary hover:text-textSecondary hover:border-textSecondary">
                         <IoIosMore />
                     </button>
                 </div>
@@ -76,7 +86,7 @@ const ProfileInfo: React.FC<ProfileProps> = React.memo((props) => {
                     Connect with {props?.user?.first_name}
                     <FaCaretDown />
                 </a>
-                <p className="text-textSecondary text-15px">Interests</p>
+                <p className="text-textSecondary text-15px mt-3">Interests</p>
                 <div className="flex flex-wrap gap-2 mt-4">
                     {props.user?.tags.custom.map((item, index) => (
                         <a

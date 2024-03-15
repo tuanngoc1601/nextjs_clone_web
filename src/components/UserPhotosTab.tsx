@@ -19,7 +19,7 @@ const UserPhotoTabs: React.FC<PhotoDataProps> = (props) => {
     };
 
     return (
-        <div className="sticky top-14 z-10 bg-white h-14 w-full flex flex-row items-center justify-start mt-62px px-5 gap-x-8 border-b border-borderColor mb-10">
+        <div className="sticky top-14 z-10 bg-white h-14 w-full flex flex-row items-center justify-start mt-48 px-5 gap-x-8 border-b border-borderColor mb-10">
             <div
                 className={`flex flex-row items-center justify-center gap-x-2 font-medium text-textPrimary text-sm  ${
                     activeTab === "photos"

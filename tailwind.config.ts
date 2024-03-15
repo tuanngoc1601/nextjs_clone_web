@@ -52,10 +52,12 @@ const config: Config = {
       },
       fontSize: {
         '15px': "15px",
+        '28px': "28px",
         '40px': "40px",
       },
       margin: {
         '62px': "62px",
+        '48': "48px",
         '50': "50px",
       },
       padding: {

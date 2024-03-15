@@ -67,7 +67,7 @@ const PhotoContainer: React.FC = () => {
 
     return (
         <>
-            <div className="w-full md:block sm:hidden lg:columns-3 md:columns-2 gap-4 md:px-5 sm:px-2.5 mt-10">
+            <div className="w-full md:block sm:hidden lg:columns-3 md:columns-2 gap-4 md:px-5 sm:px-3 mt-10">
                 {dataPhotos &&
                     dataPhotos?.map((photo, index) => (
                         <ImageItem
@@ -80,7 +80,7 @@ const PhotoContainer: React.FC = () => {
                         />
                     ))}
             </div>
-            <div className="w-full mt-10 lg:hidden sm:block">
+            <div className="w-full mt-10 md:hidden sm:block">
                 {dataPhotos &&
                     dataPhotos?.map((photo, index) => (
                         <div className="flex flex-col mb-50" key={index}>
