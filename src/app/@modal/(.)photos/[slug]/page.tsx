@@ -84,7 +84,7 @@ export default async function PhotoDetailModal({
                     />
                 </div>
                 <div className="w-full px-5 flex flex-row items-center justify-between mt-8">
-                    <div className="flex flex-row items-center justify-start gap-x-28">
+                    <div className="w-1/2 grid grid-cols-3 gap-4">
                         <div className="flex flex-col items-start justify-center gap-y-1">
                             <span className="text-textPrimary text-sm ">
                                 Views

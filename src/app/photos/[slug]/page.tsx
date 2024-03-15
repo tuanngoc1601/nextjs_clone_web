@@ -32,7 +32,7 @@ export default async function PhotoDetail({
 
     return (
         <div className="w-full flex flex-col items-center justify-center">
-            <div className="sticky top-14 z-10 bg-white h-14 w-full flex flex-row items-center justify-between mt-62px px-5 ">
+            <div className="sticky top-14 z-10 bg-white md:h-14 sm:h-24 w-full flex md:flex-row sm:flex-col md:items-center justify-between sm:items-start mt-62px md:px-5 sm:px-3 sm:pb-3 md:pb-0">
                 <div className="h-62 flex flex-row items-center justify-center gap-x-2">
                     <Image
                         src={photo?.user?.profile_image?.large ?? ""}
@@ -50,13 +50,15 @@ export default async function PhotoDetail({
                         </p>
                     </div>
                 </div>
-                <div className="flex flex-row items-center justify-center gap-x-2">
-                    <button className="bg-white text-sm text-textPrimary font-medium border border-borderColor px-3 py-2 rounded hover:text-textSecondary hover:border-textSecondary shadow">
-                        <FaHeart />
-                    </button>
-                    <button className="bg-white text-sm text-textPrimary font-medium border border-borderColor px-3 py-2 rounded hover:text-textSecondary hover:border-textSecondary shadow">
-                        <FaPlus />
-                    </button>
+                <div className="sm:w-full md:w-auto flex flex-row items-center sm:justify-between md:justify-center gap-x-2">
+                    <div className="flex flex-row items-center justify-center gap-x-2">
+                        <button className="bg-white text-sm text-textPrimary font-medium border border-borderColor px-3 py-2 rounded hover:text-textSecondary hover:border-textSecondary shadow">
+                            <FaHeart />
+                        </button>
+                        <button className="bg-white text-sm text-textPrimary font-medium border border-borderColor px-3 py-2 rounded hover:text-textSecondary hover:border-textSecondary shadow">
+                            <FaPlus />
+                        </button>
+                    </div>
                     <div className="flex flex-row items-center justify-center rounded-md shadow">
                         <button className="h-8 inline-flex items-center justify-center font-medium bg-white text-sm text-textPrimary border translate-x-px border-borderColor rounded-s px-3 py-2 hover:text-textSecondary hover:border-textSecondary">
                             Download
@@ -68,21 +70,17 @@ export default async function PhotoDetail({
                 </div>
             </div>
 
-            <div className="w-full px-5 flex flex-row items-center justify-center mt-4">
+            <div className="w-full md:px-5 sm:px-0 flex flex-row items-center justify-center md:mt-4">
                 <Image
                     src={photo?.urls?.regular ?? ""}
                     alt=""
                     width={870}
                     height={580}
-                    style={{
-                        width: "auto",
-                        height: "580px",
-                        objectFit: "contain",
-                    }}
+                    className="sm:w-full md:w-auto md:h-580 sm:h-auto object-contain"
                 />
             </div>
-            <div className="w-full px-5 flex flex-row items-center justify-between mt-8">
-                <div className="flex flex-row items-center justify-start gap-x-28">
+            <div className="w-full px-5 flex flex-row items-start justify-between mt-8">
+                <div className="w-1/2 grid md:grid-cols-3 sm:grid-rows-3 gap-4">
                     <div className="flex flex-col items-start justify-center gap-y-1">
                         <span className="text-textPrimary text-sm ">Views</span>
                         <span className="font-medium text-textSecondary text-15px">
@@ -113,11 +111,11 @@ export default async function PhotoDetail({
                 <div className="flex flex-row items-center justify-end gap-x-4">
                     <button className="bg-white text-textPrimary border border-borderColor px-3 py-1 h-8 rounded text-sm shadow inline-flex gap-x-1 font-medium items-center justify-center hover:text-textSecondary hover:border-textSecondary">
                         <IoIosShareAlt className="text-lg" />
-                        Share
+                        <span className="md:inline-block sm:hidden">Share</span>
                     </button>
                     <button className="bg-white text-textPrimary border border-borderColor px-3 py-1 h-8 rounded text-sm shadow inline-flex gap-x-1 font-medium items-center justify-center hover:text-textSecondary hover:border-textSecondary">
                         <IoMdInformationCircle className="text-base" />
-                        Info
+                        <span className="md:inline-block sm:hidden">Info</span>
                     </button>
                     <button className="bg-white text-textPrimary border border-borderColor px-3 py-1 h-8 rounded text-sm shadow inline-flex items-center justify-center hover:text-textSecondary hover:border-textSecondary">
                         <IoIosMore className="text-lg" />
