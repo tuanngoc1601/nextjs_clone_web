@@ -102,4 +102,6 @@ const ProfileInfo: React.FC<ProfileProps> = React.memo((props) => {
     );
 });
 
+ProfileInfo.displayName = "ProfileInfo";
+
 export default ProfileInfo;
