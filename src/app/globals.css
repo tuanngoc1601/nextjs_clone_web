@@ -29,8 +29,12 @@ body {
   margin: 6px 0;
 }
 
-.image-container:hover .overlay {
+.image-container:hover .overlay, .image-container:hover .user-info {
   opacity: 1;
+}
+
+.user-info {
+  transition: opacity 0.3s ease;
 }
 
 .overlay {
