@@ -81,8 +81,8 @@ export default async function PhotoDetail({
                     />
                 </a>
             </div>
-            <div className="w-full px-5 flex flex-row items-start justify-between mt-8">
-                <div className="w-1/2 grid md:grid-cols-3 sm:grid-rows-3 gap-4">
+            <div className="w-full md:px-5 sm:px-2.5 flex flex-row items-start justify-between mt-8">
+                <div className="w-1/2 grid md:grid-cols-3 md:grid-rows-1 sm:grid-rows-3 gap-4">
                     <div className="flex flex-col items-start justify-center gap-y-1">
                         <span className="text-textPrimary text-sm ">Views</span>
                         <span className="font-medium text-textSecondary text-15px">
@@ -124,7 +124,7 @@ export default async function PhotoDetail({
                     </button>
                 </div>
             </div>
-            <div className="w-full flex flex-col px-5 mt-8">
+            <div className="w-full flex flex-col md:px-5 sm:px-2.5 mt-8">
                 <p className="flex flex-row items-center justify-start gap-x-2 text-textPrimary text-sm">
                     <svg
                         style={{ fill: "#767676" }}
