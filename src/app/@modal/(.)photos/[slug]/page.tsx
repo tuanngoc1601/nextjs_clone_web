@@ -9,7 +9,7 @@ import {
     IoIosMore,
 } from "react-icons/io";
 
-export const getServerImageProps = async (id: string) => {
+const getServerImageProps = async (id: string) => {
     try {
         const image = await getImageDetail(id);
         return image;
