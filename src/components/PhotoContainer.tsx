@@ -55,7 +55,7 @@ const PhotoContainer: React.FC = () => {
         };
 
         fetchData();
-    }, [page]);
+    }, [perPage, initialLoad, page]);
 
     useEffect(() => {
         window.addEventListener("scroll", onScroll);

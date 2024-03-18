@@ -62,7 +62,7 @@ const CollectionContainer = () => {
         };
 
         fetchColletionData();
-    }, [page]);
+    }, [page, initialLoad, perPage]);
 
     useEffect(() => {
         window.addEventListener("scroll", onScroll);
