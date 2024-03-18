@@ -62,7 +62,7 @@ const CollectionContainer = () => {
         };
 
         fetchColletionData();
-    }, [page, initialLoad, perPage]);
+    }, [page, perPage]);
 
     useEffect(() => {
         window.addEventListener("scroll", onScroll);
@@ -71,6 +71,8 @@ const CollectionContainer = () => {
             window.removeEventListener("scroll", onScroll);
         };
     }, []);
+
+    console.log(collections);
 
     return (
         <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-x-6 gap-y-12 mt-16">

@@ -60,7 +60,7 @@ const UserPhotoContainer: React.FC = () => {
         };
 
         fetchUserPhotos(params.username);
-    }, [perPage, initialLoad, page , params.username]);
+    }, [perPage, page, params.username]);
 
     useEffect(() => {
         window.addEventListener("scroll", onScroll);
