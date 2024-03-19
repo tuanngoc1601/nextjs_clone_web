@@ -4,7 +4,6 @@ import { FaHeart } from "react-icons/fa";
 import { LuPlus } from "react-icons/lu";
 import { FaArrowDown } from "react-icons/fa6";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 interface ImageProps {
     slug: string;
@@ -16,8 +15,8 @@ interface ImageProps {
 
 const ImageItem: React.FC<ImageProps> = (props) => {
     return (
-        <div className="image-container cursor-zoom-in relative">
-            <Link href={`/photos/${props?.slug}`}>
+        <div className="image-container relative">
+            <Link href={`/photos/${props?.slug}`} className="cursor-zoom-in">
                 <Image src={props?.imageUrl} alt="" width={500} height={500} />
                 <div className="overlay flex flex-col items-center justify-between p-4">
                     <div className="w-full flex flex-row items-center justify-end gap-x-2">
@@ -35,9 +34,10 @@ const ImageItem: React.FC<ImageProps> = (props) => {
                     </div>
                 </div>
             </Link>
-            <Link href={`/${props?.username}`}>
-                <div className="opacity-0 user-info">
-                    <div className="w-fit flex flex-row items-center justify-start gap-x-2 cursor-pointer absolute bottom-0 ps-4 pb-4">
+
+            <div className="opacity-0 user-info">
+                <div className="w-fit flex flex-row items-center justify-start gap-x-2 cursor-pointer absolute bottom-0 ps-4 pb-4">
+                    <Link href={`/${props?.username}`}>
                         <Image
                             src={props?.userImageUrl}
                             alt=""
@@ -45,12 +45,14 @@ const ImageItem: React.FC<ImageProps> = (props) => {
                             height={32}
                             className="w-8 h-8 rounded-full object-cover"
                         />
+                    </Link>
+                    <Link href={`/${props?.username}`}>
                         <p className="text-white text-15px overflow-hidden font-medium">
                             {props?.name}
                         </p>
-                    </div>
+                    </Link>
                 </div>
-            </Link>
+            </div>
         </div>
     );
 };
