@@ -1,3 +1,4 @@
+import React from 'react';
 import { getImageDetail } from "@/api/unsplash";
 import Modal from "@/components/Modal";
 import Image from "next/image";
@@ -27,8 +28,8 @@ export default async function PhotoDetailModal({
     const photo = await getServerImageProps(id);
 
     const createdAt = photo?.created_at
-        ? new Date(photo?.created_at)
-        : new Date();
+        ? new Date(photo.created_at)
+        : "";
 
     return (
         <Modal>
@@ -143,7 +144,7 @@ export default async function PhotoDetailModal({
                         </svg>
                         Published on{" "}
                         {createdAt.toLocaleString("default", { month: "long" })}{" "}
-                        {createdAt.getDate()}, {createdAt.getFullYear()}
+                        {createdAt !== "" && createdAt.getDate()}, {createdAt !== "" && createdAt.getFullYear()}
                     </p>
                     <p className="flex flex-row items-center justify-start gap-x-2 text-textPrimary text-sm mt-2">
                         <svg

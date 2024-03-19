@@ -8,6 +8,7 @@ import {
     IoMdInformationCircle,
     IoIosMore,
 } from "react-icons/io";
+import Link from "next/link";
 
 export const getServerImageProps = async (id: string) => {
     try {
@@ -27,24 +28,30 @@ export default async function PhotoDetail({
     const photo = await getServerImageProps(id);
 
     const createdAt = photo?.created_at
-        ? new Date(photo?.created_at)
-        : new Date();
+        ? new Date(photo.created_at)
+        : "";
 
     return (
         <div className="w-full flex flex-col items-center justify-center">
             <div className="sticky top-14 z-10 bg-white md:h-14 sm:h-24 w-full flex md:flex-row sm:flex-col md:items-center justify-between sm:items-start mt-62px md:px-5 sm:px-3 sm:pb-3 md:pb-0">
                 <div className="h-62 flex flex-row items-center justify-center gap-x-2">
-                    <Image
-                        src={photo?.user?.profile_image?.large ?? ""}
-                        alt=""
-                        width={32}
-                        height={32}
-                        className="rounded-full cursor-pointer"
-                    />
+                    <Link href={`/${photo?.user?.username}`}>
+                        <Image
+                            src={photo?.user?.profile_image?.large ?? ""}
+                            alt=""
+                            width={32}
+                            height={32}
+                            className="rounded-full cursor-pointer"
+                        />
+                    </Link>
+
                     <div className="flex flex-col overflow-hidden whitespace-nowrap">
-                        <h3 className="block text-15px leading-5 font-medium text-textSecondary cursor-pointer">
-                            {photo?.user?.name}
-                        </h3>
+                        <Link href={`/${photo?.user?.username}`}>
+                            <h3 className="block text-15px leading-5 font-medium text-textSecondary cursor-pointer">
+                                {photo?.user?.name}
+                            </h3>
+                        </Link>
+
                         <p className="text-textPrimary text-xs hover:text-textSecondary cursor-pointer">
                             {photo?.user?.username}
                         </p>
@@ -139,7 +146,7 @@ export default async function PhotoDetail({
                     </svg>
                     Published on{" "}
                     {createdAt.toLocaleString("default", { month: "long" })}{" "}
-                    {createdAt.getDate()}, {createdAt.getFullYear()}
+                    {createdAt !== "" && createdAt.getDate()}, {createdAt !== "" && createdAt.getFullYear()}
                 </p>
                 <p className="flex flex-row items-center justify-start gap-x-2 text-textPrimary text-sm mt-2">
                     <svg
