@@ -11,6 +11,7 @@ interface Tag {
 
 interface Photo {
     id: string;
+    slug: string;
     urls: {
         raw: string;
         full: string;
@@ -75,6 +76,7 @@ const CollectionContainer = () => {
     return (
         <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-x-6 gap-y-12 mt-16">
             {collections &&
+                collections.length > 0 &&
                 collections.map((collection, index) => (
                     <CollectionItem
                         key={index}

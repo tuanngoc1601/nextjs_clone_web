@@ -36,13 +36,15 @@ const ProfileInfo: React.FC<ProfileProps> = React.memo((props) => {
     return (
         <div className="sm:flex md:flex-row sm:flex-col lg:w-7/12 md:w-4/5 mx-auto items-start justify-center gap-x-10 sm:px-3">
             <div className="sm:w-full md:w-150 flex flex-row flex-none items-start justify-between">
-                <Image
-                    src={props?.user?.profile_image?.large}
-                    alt=""
-                    width={150}
-                    height={150}
-                    className="rounded-full object-cover"
-                />
+                {props?.user?.profile_image?.large && (
+                    <Image
+                        src={props.user.profile_image.large}
+                        alt={props?.user?.name ?? "image"}
+                        width={150}
+                        height={150}
+                        className="rounded-full object-cover"
+                    />
+                )}
                 <div className="sm:flex sm:flex-row md:hidden items-start justify-end gap-x-2">
                     <button className="py-2 px-3 bg-white rounded border border-borderColor text-textPrimary hover:text-textSecondary hover:border-textSecondary">
                         <IoMail />
@@ -68,18 +70,18 @@ const ProfileInfo: React.FC<ProfileProps> = React.memo((props) => {
                 </button>
                 <div className="flex flex-row items-center justify-start gap-x-8 mt-1">
                     <h2 className="md:text-40px sm:text-28px text-textSecondary font-bold">
-                        {props.user?.name}
+                        {props?.user?.name}
                     </h2>
                     <button className="py-2 px-3 sm:hidden bg-white rounded border border-borderColor text-textPrimary hover:text-textSecondary hover:border-textSecondary">
                         <IoIosMore />
                     </button>
                 </div>
                 <p className="text-15px text-textSecondary break-words whitespace-pre-line mt-3">
-                    {props.user?.bio}
+                    {props?.user?.bio}
                 </p>
                 <a className="py-1 text-15px text-textPrimary flex flex-row items-center justify-center gap-x-2 hover:text-textSecondary cursor-pointer mt-3">
                     <IoLocationSharp />
-                    {props.user?.location}
+                    {props?.user?.location}
                 </a>
                 <a className="py-1 text-15px flex flex-row items-center justify-center gap-x-2 text-textPrimary hover:text-textSecondary cursor-pointer mt-1">
                     <IoIosLink />
@@ -88,7 +90,7 @@ const ProfileInfo: React.FC<ProfileProps> = React.memo((props) => {
                 </a>
                 <p className="text-textSecondary text-15px mt-3">Interests</p>
                 <div className="flex flex-wrap gap-2 mt-4">
-                    {props.user?.tags.custom.map((item, index) => (
+                    {props?.user?.tags?.custom.map((item, index) => (
                         <a
                             key={index}
                             className="text-iconColor text-sm py-1 px-2 rounded capitalize bg-bgInputSearch no-underline cursor-pointer hover:text-textSecondary hover:bg-bgHoverItem"

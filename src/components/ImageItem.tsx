@@ -7,6 +7,7 @@ import Link from "next/link";
 
 interface ImageProps {
     slug: string;
+    alt_description: string;
     imageUrl: string;
     userImageUrl: string;
     name: string;
@@ -17,7 +18,14 @@ const ImageItem: React.FC<ImageProps> = (props) => {
     return (
         <div className="image-container relative">
             <Link href={`/photos/${props?.slug}`} className="cursor-zoom-in">
-                <Image src={props?.imageUrl} alt="" width={500} height={500} />
+                {props?.imageUrl && (
+                    <Image
+                        src={props.imageUrl}
+                        alt={props?.alt_description ?? "image"}
+                        width={500}
+                        height={500}
+                    />
+                )}
                 <div className="overlay flex flex-col items-center justify-between p-4">
                     <div className="w-full flex flex-row items-center justify-end gap-x-2">
                         <button className="px-3 py-2 text-base text-iconColor rounded border-black shadown-sm bg-bgButtonIcon hover:text-textPrimary hover:bg-white">
@@ -38,13 +46,15 @@ const ImageItem: React.FC<ImageProps> = (props) => {
             <div className="opacity-0 user-info">
                 <div className="w-fit flex flex-row items-center justify-start gap-x-2 cursor-pointer absolute bottom-0 ps-4 pb-4">
                     <Link href={`/${props?.username}`}>
-                        <Image
-                            src={props?.userImageUrl}
-                            alt=""
-                            width={32}
-                            height={32}
-                            className="w-8 h-8 rounded-full object-cover"
-                        />
+                        {props?.userImageUrl && (
+                            <Image
+                                src={props.userImageUrl}
+                                alt={props?.name ?? "image"}
+                                width={32}
+                                height={32}
+                                className="w-8 h-8 rounded-full object-cover"
+                            />
+                        )}
                     </Link>
                     <Link href={`/${props?.username}`}>
                         <p className="text-white text-15px overflow-hidden font-medium">

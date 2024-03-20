@@ -27,22 +27,24 @@ export default async function PhotoDetail({
     const id = params?.slug.slice(params?.slug.length - 11);
     const photo = await getServerImageProps(id);
 
-    const createdAt = photo?.created_at
-        ? new Date(photo.created_at)
-        : "";
+    const createdAt = photo?.created_at ? new Date(photo.created_at) : "";
+
+    console.log(photo.alt_description);
 
     return (
         <div className="w-full flex flex-col items-center justify-center">
             <div className="sticky top-14 z-10 bg-white md:h-14 sm:h-24 w-full flex md:flex-row sm:flex-col md:items-center justify-between sm:items-start mt-62px md:px-5 sm:px-3 sm:pb-3 md:pb-0">
                 <div className="h-62 flex flex-row items-center justify-center gap-x-2">
                     <Link href={`/${photo?.user?.username}`}>
-                        <Image
-                            src={photo?.user?.profile_image?.large ?? ""}
-                            alt=""
-                            width={32}
-                            height={32}
-                            className="rounded-full cursor-pointer"
-                        />
+                        {photo?.user?.profile_image?.large && (
+                            <Image
+                                src={photo.user.profile_image.large}
+                                alt={photo.user?.name ?? "image"}
+                                width={32}
+                                height={32}
+                                className="rounded-full cursor-pointer"
+                            />
+                        )}
                     </Link>
 
                     <div className="flex flex-col overflow-hidden whitespace-nowrap">
@@ -79,13 +81,15 @@ export default async function PhotoDetail({
 
             <div className="w-full md:px-5 sm:px-0 flex flex-row items-center justify-center md:mt-4">
                 <a href={photo?.urls?.full} target="_blank">
-                    <Image
-                        src={photo?.urls?.regular ?? ""}
-                        alt=""
-                        width={870}
-                        height={580}
-                        className="sm:w-full md:w-auto md:h-580 sm:h-auto object-contain cursor-zoom-in hover:bg-black hover:opacity-90 transition-all"
-                    />
+                    {photo?.urls?.regular && (
+                        <Image
+                            src={photo.urls.regular}
+                            alt={photo?.alt_description ?? "image"}
+                            width={870}
+                            height={580}
+                            className="sm:w-full md:w-auto md:h-580 sm:h-auto object-contain cursor-zoom-in hover:bg-black hover:opacity-90 transition-all"
+                        />
+                    )}
                 </a>
             </div>
             <div className="w-full md:px-5 sm:px-2.5 flex flex-row items-start justify-between mt-8">
@@ -146,7 +150,8 @@ export default async function PhotoDetail({
                     </svg>
                     Published on{" "}
                     {createdAt.toLocaleString("default", { month: "long" })}{" "}
-                    {createdAt !== "" && createdAt.getDate()}, {createdAt !== "" && createdAt.getFullYear()}
+                    {createdAt !== "" && createdAt.getDate()},{" "}
+                    {createdAt !== "" && createdAt.getFullYear()}
                 </p>
                 <p className="flex flex-row items-center justify-start gap-x-2 text-textPrimary text-sm mt-2">
                     <svg
@@ -166,14 +171,16 @@ export default async function PhotoDetail({
                     </span>
                 </p>
                 <div className="w-full flex flex-wrap items-center justify-start gap-2 my-8">
-                    {photo?.tags.map((tag: any, index: any) => (
-                        <a
-                            key={index}
-                            className="text-iconColor text-sm py-1 px-2 rounded capitalize bg-bgInputSearch no-underline cursor-pointer hover:text-textSecondary hover:bg-bgHoverItem"
-                        >
-                            {tag.source?.title || tag.title}
-                        </a>
-                    ))}
+                    {photo?.tags &&
+                        photo.tags.length > 0 &&
+                        photo.tags.map((tag: any, index: any) => (
+                            <a
+                                key={index}
+                                className="text-iconColor text-sm py-1 px-2 rounded capitalize bg-bgInputSearch no-underline cursor-pointer hover:text-textSecondary hover:bg-bgHoverItem"
+                            >
+                                {tag.source?.title || tag.title}
+                            </a>
+                        ))}
                 </div>
             </div>
         </div>

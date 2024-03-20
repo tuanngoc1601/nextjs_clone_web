@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { getImageDetail } from "@/api/unsplash";
 import Modal from "@/components/Modal";
 import Image from "next/image";
@@ -27,22 +27,22 @@ export default async function PhotoDetailModal({
     const id = params?.slug.slice(params?.slug.length - 11);
     const photo = await getServerImageProps(id);
 
-    const createdAt = photo?.created_at
-        ? new Date(photo.created_at)
-        : "";
+    const createdAt = photo?.created_at ? new Date(photo.created_at) : "";
 
     return (
         <Modal>
             <div className="w-full h-full overflow-auto flex flex-col items-center justify-center rounded-lg bg-white modal-content p-4">
                 <div className="bg-white h-14 w-full flex flex-row items-center justify-between sticky top-0 px-5">
                     <div className="h-62 flex flex-row items-center justify-center gap-x-2">
-                        <Image
-                            src={photo?.user?.profile_image?.large ?? ""}
-                            alt=""
-                            width={32}
-                            height={32}
-                            className="rounded-full cursor-pointer"
-                        />
+                        {photo?.user?.profile_image?.large && (
+                            <Image
+                                src={photo.user.profile_image.large}
+                                alt={photo.user?.name ?? "image"}
+                                width={32}
+                                height={32}
+                                className="rounded-full cursor-pointer"
+                            />
+                        )}
                         <div className="flex flex-col overflow-hidden whitespace-nowrap">
                             <h3 className="block text-15px leading-5 font-medium text-textSecondary cursor-pointer">
                                 {photo?.user?.name}
@@ -71,18 +71,20 @@ export default async function PhotoDetailModal({
                 </div>
 
                 <div className="w-full px-5 flex flex-row items-center justify-center">
-                    <Image
-                        src={photo?.urls?.regular ?? ""}
-                        alt=""
-                        width={870}
-                        height={580}
-                        style={{
-                            width: "auto",
-                            height: "580px",
-                            objectFit: "contain",
-                            overflow: "auto",
-                        }}
-                    />
+                    {photo?.urls?.regular && (
+                        <Image
+                            src={photo.urls.regular}
+                            alt={photo?.alt_descriptionß ?? "image"}
+                            width={870}
+                            height={580}
+                            style={{
+                                width: "auto",
+                                height: "580px",
+                                objectFit: "contain",
+                                overflow: "auto",
+                            }}
+                        />
+                    )}
                 </div>
                 <div className="w-full px-5 flex flex-row items-center justify-between mt-8">
                     <div className="w-1/2 grid grid-cols-3 gap-4">
@@ -144,7 +146,8 @@ export default async function PhotoDetailModal({
                         </svg>
                         Published on{" "}
                         {createdAt.toLocaleString("default", { month: "long" })}{" "}
-                        {createdAt !== "" && createdAt.getDate()}, {createdAt !== "" && createdAt.getFullYear()}
+                        {createdAt !== "" && createdAt.getDate()},{" "}
+                        {createdAt !== "" && createdAt.getFullYear()}
                     </p>
                     <p className="flex flex-row items-center justify-start gap-x-2 text-textPrimary text-sm mt-2">
                         <svg
@@ -164,14 +167,16 @@ export default async function PhotoDetailModal({
                         </span>
                     </p>
                     <div className="w-full flex flex-wrap items-center justify-start gap-2 my-8">
-                        {photo?.tags.map((tag: any, index: any) => (
-                            <a
-                                key={index}
-                                className="text-iconColor text-sm py-1 px-2 rounded capitalize bg-bgInputSearch no-underline cursor-pointer hover:text-textSecondary hover:bg-bgHoverItem"
-                            >
-                                {tag.source?.title || tag.title}
-                            </a>
-                        ))}
+                        {photo?.tags &&
+                            photo.tags.length > 0 &&
+                            photo.tags.map((tag: any, index: any) => (
+                                <a
+                                    key={index}
+                                    className="text-iconColor text-sm py-1 px-2 rounded capitalize bg-bgInputSearch no-underline cursor-pointer hover:text-textSecondary hover:bg-bgHoverItem"
+                                >
+                                    {tag.source?.title || tag.title}
+                                </a>
+                            ))}
                     </div>
                 </div>
             </div>

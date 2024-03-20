@@ -11,6 +11,7 @@ import { LuPlus } from "react-icons/lu";
 interface PhotoProps {
     id: string;
     slug: string;
+    alt_description: string;
     urls: {
         raw: string;
         regular: string;
@@ -74,6 +75,7 @@ const UserPhotoContainer: React.FC = () => {
         <>
             <div className="w-full md:block sm:hidden lg:columns-3 md:columns-2 gap-4 px-5">
                 {photos &&
+                    photos.length > 0 &&
                     photos.map((photo, index) => (
                         <ImageItem
                             key={index}
@@ -82,32 +84,38 @@ const UserPhotoContainer: React.FC = () => {
                             userImageUrl={photo.user?.profile_image?.large}
                             name={photo.user?.name}
                             username={photo.user?.username}
+                            alt_description={photo.alt_description}
                         />
                     ))}
             </div>
             <div className="w-full mt-10 md:hidden sm:block">
                 {photos &&
+                    photos.length > 0 &&
                     photos?.map((photo, index) => (
                         <div className="flex flex-col mb-50" key={index}>
                             <div className="flex flex-row items-center justify-start px-3 gap-x-2 mb-3">
-                                <Image
-                                    src={photo.user?.profile_image?.large}
-                                    alt=""
-                                    width={32}
-                                    height={32}
-                                    className="rounded-full object-cover"
-                                />
+                                {photo.user?.profile_image?.large && (
+                                    <Image
+                                        src={photo.user.profile_image.large}
+                                        alt={photo.user?.name ?? "image"}
+                                        width={32}
+                                        height={32}
+                                        className="rounded-full object-cover"
+                                    />
+                                )}
                                 <p className="text-15px overflow-hidden font-medium">
                                     {photo.user?.name}
                                 </p>
                             </div>
-                            <Image
-                                src={photo.urls?.small}
-                                alt=""
-                                width={500}
-                                height={500}
-                                style={{ width: "100%" }}
-                            />
+                            {photo.urls?.small && (
+                                <Image
+                                    src={photo.urls.small}
+                                    alt={photo?.alt_description ?? "image"}
+                                    width={500}
+                                    height={500}
+                                    style={{ width: "100%" }}
+                                />
+                            )}
                             <div className="flex flex-row items-center justify-between px-3 mt-3">
                                 <div className="flex flex-row items-center justify-center gap-x-2">
                                     <button className="px-3 py-2 text-base text-textPrimary rounded shadow bg-white border h-8 w-10 border-borderColor">

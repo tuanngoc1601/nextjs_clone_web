@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 
 interface Photo {
     id: string;
+    alt_description: string;
     slug: string;
     urls: {
         raw: string;
@@ -43,7 +44,8 @@ const CollectionPhotos = () => {
     return (
         <div className="w-full columns-3 gap-4">
             {photos &&
-                photos?.map((photo, index) => (
+                photos.length > 0 &&
+                photos.map((photo, index) => (
                     <ImageItem
                         key={index}
                         slug={photo.slug}
@@ -51,6 +53,7 @@ const CollectionPhotos = () => {
                         userImageUrl={photo.user?.profile_image?.large}
                         name={photo.user?.name}
                         username={photo.user?.username}
+                        alt_description={photo.alt_description}
                     />
                 ))}
         </div>

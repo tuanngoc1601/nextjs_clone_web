@@ -40,13 +40,15 @@ export default async function CollectionDetail({
                 <div>
                     <p className="text-lg mb-6">{collection?.description}</p>
                     <div className="flex flex-row items-center justify-start gap-x-2">
-                        <Image
-                            src={collection?.user?.profile_image?.small ?? ""}
-                            alt=""
-                            width={32}
-                            height={32}
-                            className="rounded-full"
-                        />
+                        {collection?.user?.profile_image?.small && (
+                            <Image
+                                src={collection.user.profile_image.small}
+                                alt={collection.user?.name ?? "image"}
+                                width={32}
+                                height={32}
+                                className="rounded-full"
+                            />
+                        )}
                         <p className="block leading-5 overflow-hidden whitespace-nowrap font-medium">
                             {collection?.user?.name}
                         </p>

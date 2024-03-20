@@ -8,6 +8,7 @@ interface Tag {
 }
 
 interface Photo {
+    slug: string;
     urls: {
         raw: string;
         full: string;
@@ -31,32 +32,38 @@ const CollectionItem: React.FC<CollectionProps> = (props) => {
                 <div className="flex flex-col items-start justify-center cursor-pointer hover:opacity-85">
                     <div className="w-full aspect-10/7 flex overflow-hidden cursor-pointer rounded-lg mb-4">
                         <div className="bg-bgSection w-70% relative">
-                            <Image
-                                src={props?.preview_photos[0]?.urls?.small}
-                                alt=""
-                                width={500}
-                                height={500}
-                                className="w-full h-full left-0 absolute object-cover"
-                            />
+                            {props?.preview_photos[0]?.urls?.small && (
+                                <Image
+                                    src={props.preview_photos[0].urls.small}
+                                    alt={props.preview_photos[0]?.slug ?? "image"}
+                                    width={500}
+                                    height={500}
+                                    className="w-full h-full left-0 absolute object-cover"
+                                />
+                            )}
                         </div>
                         <div className="w-30% flex flex-col ms-0.5">
                             <div className="bg-bgSection mb-0.5 relative grow">
-                                <Image
-                                    src={props?.preview_photos[1]?.urls?.small}
-                                    alt=""
-                                    width={500}
-                                    height={500}
-                                    className="w-full h-full left-0 absolute object-cover"
-                                />
+                                {props?.preview_photos[1]?.urls?.small && (
+                                    <Image
+                                        src={props.preview_photos[1].urls.small}
+                                        alt={props.preview_photos[1]?.slug ?? "image"}
+                                        width={500}
+                                        height={500}
+                                        className="w-full h-full left-0 absolute object-cover"
+                                    />
+                                )}
                             </div>
                             <div className="bg-bgSection grow relative">
-                                <Image
-                                    src={props?.preview_photos[2]?.urls?.small}
-                                    alt=""
-                                    width={500}
-                                    height={500}
-                                    className="w-full h-full left-0 absolute object-cover"
-                                />
+                                {props?.preview_photos[2]?.urls?.small && (
+                                    <Image
+                                        src={props.preview_photos[2].urls.small}
+                                        alt={props.preview_photos[2]?.slug ?? "image"}
+                                        width={500}
+                                        height={500}
+                                        className="w-full h-full left-0 absolute object-cover"
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>
