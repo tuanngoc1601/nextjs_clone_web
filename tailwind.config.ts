@@ -49,6 +49,7 @@ const config: Config = {
         iconColor: "#555555",
         bgButtonIcon: "#ffffffe6",
         bgHoverItem: "#e1e1e1",
+        bgModal: "#0009",
       },
       fontSize: {
         '15px': "15px",
@@ -62,6 +63,7 @@ const config: Config = {
       },
       padding: {
         '17.5': "70px",
+        '25': "100px",
       },
       aspectRatio: {
         '10/7': '10 / 7',

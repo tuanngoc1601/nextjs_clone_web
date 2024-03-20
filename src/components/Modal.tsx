@@ -4,22 +4,26 @@ import { useRouter } from "next/navigation";
 import React, { useCallback } from "react";
 
 const Modal = ({ children }: { children: React.ReactNode }) => {
-
     const router = useRouter();
 
-    const backPreviouPage = useCallback(() => {
-        router.back();
-    }, [router]);
+    const stopPropagation = useCallback((e: any) => {
+        e.stopPropagation();
+    }, []);
+
+    const backPreviouPage = useCallback(
+        (e: any) => {
+            router.back();
+        },
+        [router]
+    );
 
     return (
-        <div>
+        <div className="w-full min-h-screen bg-bgModal backdrop-blur-sm fixed top-0 left-0 z-30 overflow-auto modal-content">
             <div
-                className="w-full min-h-screen bg-black opacity-50 backdrop-blur-sm fixed top-0 left-0 z-30 cursor-zoom-out"
-                onClick={() => backPreviouPage()}
+                className="w-full min-h-screen top-0 left-0 absolute py-4 pb-25 px-17.5 z-30 flex flex-row justify-center items-center overflow-auto rounded-lg cursor-zoom-out"
+                onClick={(e) => backPreviouPage(e)}
             >
-            </div>
-            <div className="w-90% h-90% flex flex-row items-center justify-center bg-white fixed z-40 p-4 top-1/2 left-1/2 transform overflow-auto modal rounded-lg">
-                {children}
+                <div className="cursor-default" onClick={(e) => stopPropagation(e)}>{children}</div>
             </div>
         </div>
     );

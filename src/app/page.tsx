@@ -68,7 +68,7 @@ export default function Home() {
                     }}
                 >
                     <div
-                        className="h-full w-full flex flex-col items-start justify-end p-5 text-white"
+                        className="h-full w-full flex flex-col items-start justify-end p-5 rounded-md text-white"
                         style={{
                             background:
                                 "linear-gradient(0deg,#000000a6,#0000 55%)",
