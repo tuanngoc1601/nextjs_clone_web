@@ -46,21 +46,15 @@ const UserPhotoContainer: React.FC = () => {
     };
 
     useEffect(() => {
-        const fetchUserPhotos = async (username: string) => {
-            try {
-                const userPhotos = await getUserPhotos(username, perPage, page);
-                if (initialLoad) {
-                    setInitialLoad(false);
-                    setPhotos(userPhotos);
-                } else {
-                    setPhotos((prev) => [...prev, ...userPhotos]);
-                }
-            } catch (err) {
-                console.error("Failed fetching photos", err);
+        (async (username: string) => {
+            const userPhotos = await getUserPhotos(username, perPage, page);
+            if (initialLoad) {
+                setInitialLoad(false);
+                setPhotos(userPhotos);
+            } else {
+                setPhotos((prev) => [...prev, ...userPhotos]);
             }
-        };
-
-        fetchUserPhotos(params.username);
+        })(params.username);
     }, [perPage, page, params.username]);
 
     useEffect(() => {

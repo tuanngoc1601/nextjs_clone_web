@@ -29,16 +29,10 @@ const CollectionPhotos = () => {
     const params = useParams<{ collectionId: string }>();
 
     useEffect(() => {
-        const fetchPhotoCollection = async () => {
-            try {
-                const data = await getPhotoCollection(params.collectionId);
-                setPhotos(data);
-            } catch (err) {
-                console.error("Failed fetching collection's photos", err);
-            }
-        };
-
-        fetchPhotoCollection();
+        (async () => {
+            const data = await getPhotoCollection(params.collectionId);
+            setPhotos(data);
+        })();
     }, [params.collectionId]);
 
     return (

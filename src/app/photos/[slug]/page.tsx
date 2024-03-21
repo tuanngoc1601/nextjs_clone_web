@@ -10,22 +10,13 @@ import {
 } from "react-icons/io";
 import Link from "next/link";
 
-const getServerImageProps = async (id: string) => {
-    try {
-        const image = await getImageDetail(id);
-        return image;
-    } catch (err) {
-        console.error("failed fetching image data", err);
-    }
-};
-
 export default async function PhotoDetail({
     params,
 }: {
     params: { slug: string };
 }) {
     const id = params?.slug.slice(params?.slug.length - 11);
-    const photo = await getServerImageProps(id);
+    const photo = await getImageDetail(id);
 
     const createdAt = photo?.created_at ? new Date(photo.created_at) : "";
 

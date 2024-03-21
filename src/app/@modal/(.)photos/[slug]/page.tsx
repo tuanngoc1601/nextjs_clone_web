@@ -10,22 +10,13 @@ import {
     IoIosMore,
 } from "react-icons/io";
 
-const getServerImageProps = async (id: string) => {
-    try {
-        const image = await getImageDetail(id);
-        return image;
-    } catch (err) {
-        console.error("failed fetching image data", err);
-    }
-};
-
 export default async function PhotoDetailModal({
     params,
 }: {
     params: { slug: string };
 }) {
     const id = params?.slug.slice(params?.slug.length - 11);
-    const photo = await getServerImageProps(id);
+    const photo = await getImageDetail(id);
 
     const createdAt = photo?.created_at ? new Date(photo.created_at) : "";
 

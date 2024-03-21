@@ -47,22 +47,16 @@ const CollectionContainer = () => {
     };
 
     useEffect(() => {
-        const fetchColletionData = async () => {
-            try {
-                const dataCollections = await getListCollections(perPage, page);
+        (async () => {
+            const dataCollections = await getListCollections(perPage, page);
 
-                if (initialLoad) {
-                    setInitialLoad(false);
-                    setCollections(dataCollections);
-                } else {
-                    setCollections((prev) => [...prev, ...dataCollections]);
-                }
-            } catch (err) {
-                console.error("Failed fetching collections list", err);
+            if (initialLoad) {
+                setInitialLoad(false);
+                setCollections(dataCollections);
+            } else {
+                setCollections((prev) => [...prev, ...dataCollections]);
             }
-        };
-
-        fetchColletionData();
+        })();
     }, [page, perPage]);
 
     useEffect(() => {

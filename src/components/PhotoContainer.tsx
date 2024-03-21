@@ -41,22 +41,16 @@ const PhotoContainer: React.FC = () => {
     };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await getListPhotos(perPage, page);
+        (async () => {
+            const data = await getListPhotos(perPage, page);
 
-                if (initialLoad) {
-                    setInitialLoad(false);
-                    setDataPhotos(data);
-                } else {
-                    setDataPhotos((prev) => [...prev, ...data]);
-                }
-            } catch (err) {
-                console.error("Error fetching photos:", err);
+            if (initialLoad) {
+                setInitialLoad(false);
+                setDataPhotos(data);
+            } else {
+                setDataPhotos((prev) => [...prev, ...data]);
             }
-        };
-
-        fetchData();
+        })();
     }, [perPage, page]);
 
     useEffect(() => {

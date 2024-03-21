@@ -4,40 +4,6 @@ import UserPhotoTabs from "@/components/UserPhotosTab";
 import ProfileInfo from "@/components/ProfileInfo";
 import UserPhotoContainer from "@/components/UserPhotoContainer";
 
-// interface Custom {
-//     title: string;
-//     source: {
-//         title: string;
-//     };
-// }
-
-// interface UserInfo {
-//     name: string;
-//     first_name: string;
-//     bio: string;
-//     location: string;
-//     total_photos: number;
-//     total_likes: number;
-//     total_collections: number;
-//     profile_image: {
-//         small: string;
-//         medium: string;
-//         large: string;
-//     };
-//     tags: {
-//         custom: Custom[];
-//     };
-// }
-
-const getData = async (username: string) => {
-    try {
-        const userData = await getUserInfo(username);
-        return userData;
-    } catch (err) {
-        console.error("Failed fetching user data", err);
-    }
-};
-
 export default async function UserProfile({
     params,
 }: {
@@ -45,7 +11,7 @@ export default async function UserProfile({
         username: string;
     };
 }) {
-    const userData = await getData(params.username);
+    const userData = await getUserInfo(params.username);
     return (
         <div className="w-full mt-28">
             {userData && <ProfileInfo user={userData} />}

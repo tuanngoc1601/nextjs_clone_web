@@ -5,31 +5,13 @@ import { getCollections, getRelatedCollections } from "@/api/unsplash";
 import { IoIosShareAlt, IoIosMore } from "react-icons/io";
 import CollectionPhotos from "@/components/CollectionPhotos";
 
-export const getServerCollectionProps = async (collectionId: string) => {
-    try {
-        const collection = await getCollections(collectionId);
-        return collection;
-    } catch (err) {
-        console.error("Failed fetching data", err);
-    }
-};
-
-export const getServerCollectionRelatedProps = async (collectionId: string) => {
-    try {
-        const collectionRelated = await getRelatedCollections(collectionId);
-        return collectionRelated;
-    } catch (err) {
-        console.error("Failed fetching data", err);
-    }
-};
-
 export default async function CollectionDetail({
     params,
 }: {
     params: { collectionId: string; slug: string };
 }) {
-    const collection = await getServerCollectionProps(params.collectionId);
-    const collectionRelated = await getServerCollectionRelatedProps(
+    const collection = await getCollections(params.collectionId);
+    const collectionRelated = await getRelatedCollections(
         params.collectionId
     );
 
