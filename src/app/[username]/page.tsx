@@ -4,7 +4,32 @@ import UserPhotoTabs from "@/components/UserPhotosTab";
 import ProfileInfo from "@/components/ProfileInfo";
 import UserPhotoContainer from "@/components/UserPhotoContainer";
 
-export const getData = async (username: string) => {
+// interface Custom {
+//     title: string;
+//     source: {
+//         title: string;
+//     };
+// }
+
+// interface UserInfo {
+//     name: string;
+//     first_name: string;
+//     bio: string;
+//     location: string;
+//     total_photos: number;
+//     total_likes: number;
+//     total_collections: number;
+//     profile_image: {
+//         small: string;
+//         medium: string;
+//         large: string;
+//     };
+//     tags: {
+//         custom: Custom[];
+//     };
+// }
+
+const getData = async (username: string) => {
     try {
         const userData = await getUserInfo(username);
         return userData;

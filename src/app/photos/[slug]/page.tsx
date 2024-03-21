@@ -10,7 +10,7 @@ import {
 } from "react-icons/io";
 import Link from "next/link";
 
-export const getServerImageProps = async (id: string) => {
+const getServerImageProps = async (id: string) => {
     try {
         const image = await getImageDetail(id);
         return image;
@@ -28,8 +28,6 @@ export default async function PhotoDetail({
     const photo = await getServerImageProps(id);
 
     const createdAt = photo?.created_at ? new Date(photo.created_at) : "";
-
-    console.log(photo.alt_description);
 
     return (
         <div className="w-full flex flex-col items-center justify-center">
