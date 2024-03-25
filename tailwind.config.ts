@@ -31,6 +31,7 @@ const config: Config = {
         "90%": "90%",
       },
       height: {
+        38: "38px",
         54: "54px",
         62: "62px",
         150: "150px",

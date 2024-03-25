@@ -100,3 +100,35 @@ export const getImageDetail = async (id: string) => {
 
     return response.json();
 };
+
+export const getSearchPhotos = async (
+    query: string,
+    perPage: number,
+    page: number
+) => {
+    const response = await fetch(
+        `${ENPOINT}/search/photos?query=${query}&client_id=${client_id}&per_page=${perPage}&page=${page}`
+    );
+
+    if (!response.ok) {
+        throw new Error("Error fetching search photos");
+    }
+
+    return response.json();
+};
+
+export const getSearchCollections = async (
+    query: string,
+    perPage: number,
+    page: number
+) => {
+    const response = await fetch(
+        `${ENPOINT}/search/collections?query=${query}&client_id=${client_id}&per_page=${perPage}&page=${page}`
+    );
+
+    if (!response.ok) {
+        throw new Error("Error fetching search collections");
+    }
+
+    return response.json();
+};
