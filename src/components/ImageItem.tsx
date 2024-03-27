@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { FaHeart } from "react-icons/fa";
 import { LuPlus } from "react-icons/lu";
@@ -12,9 +12,12 @@ interface ImageProps {
     userImageUrl: string;
     name: string;
     username: string;
+    width: number;
+    height: number;
 }
 
 const ImageItem: React.FC<ImageProps> = (props) => {
+    const [loading, setLoading] = useState(true);
     return (
         <div className="image-container relative">
             <Link href={`/photos/${props?.slug}`} className="cursor-zoom-in">
@@ -24,6 +27,11 @@ const ImageItem: React.FC<ImageProps> = (props) => {
                         alt={props?.alt_description ?? "image"}
                         width={500}
                         height={500}
+                        className={`${loading ? "blur" : "opacity-100"}`}
+                        style={{
+                            aspectRatio: `${props?.width} / ${props?.height}`,
+                        }}
+                        onLoad={() => setLoading(false)}
                     />
                 )}
                 <div className="overlay flex flex-col items-center justify-between p-4">

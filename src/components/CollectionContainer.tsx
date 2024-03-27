@@ -38,7 +38,7 @@ const CollectionContainer = () => {
 
     const onScroll = () => {
         const isEndPage =
-            window.scrollY + window.innerHeight >=
+            window.scrollY + window.innerHeight + 5000 >=
             document.documentElement.scrollHeight;
 
         if (isEndPage) {

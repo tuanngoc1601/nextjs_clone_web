@@ -12,6 +12,8 @@ interface Photo {
     id: string;
     slug: string;
     alt_description: string;
+    width: number;
+    height: number;
     urls: {
         raw: string;
         regular: string;
@@ -62,6 +64,8 @@ const SearchPhotoContainer: React.FC = () => {
                                 name={photo.user?.name}
                                 username={photo.user?.username}
                                 alt_description={photo.alt_description}
+                                width={photo.width}
+                                height={photo.height}
                             />
                         ))}
                 </div>

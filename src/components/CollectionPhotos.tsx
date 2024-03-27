@@ -9,6 +9,8 @@ interface Photo {
     id: string;
     alt_description: string;
     slug: string;
+    width: number;
+    height: number;
     urls: {
         raw: string;
         full: string;
@@ -48,6 +50,8 @@ const CollectionPhotos = () => {
                         name={photo.user?.name}
                         username={photo.user?.username}
                         alt_description={photo.alt_description}
+                        width={photo.width}
+                        height={photo.height}
                     />
                 ))}
         </div>

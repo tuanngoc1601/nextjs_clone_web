@@ -11,6 +11,8 @@ import { LuPlus } from "react-icons/lu";
 interface PhotoProps {
     id: string;
     slug: string;
+    width: number;
+    height: number;
     alt_description: string;
     urls: {
         raw: string;
@@ -37,7 +39,7 @@ const UserPhotoContainer: React.FC = () => {
 
     const onScroll = () => {
         const isEndPage =
-            window.scrollY + window.innerHeight >=
+            window.scrollY + window.innerHeight + 5000 >=
             document.documentElement.scrollHeight;
 
         if (isEndPage) {
@@ -79,6 +81,8 @@ const UserPhotoContainer: React.FC = () => {
                             name={photo.user?.name}
                             username={photo.user?.username}
                             alt_description={photo.alt_description}
+                            width={photo.width}
+                            height={photo.height}
                         />
                     ))}
             </div>
