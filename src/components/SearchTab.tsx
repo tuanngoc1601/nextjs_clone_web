@@ -1,24 +1,27 @@
 "use client";
 
 import { getSearchCollections, getSearchPhotos } from "@/api/unsplash";
+import { useStore } from "@/lib/store";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { MdPhotoSizeSelectActual } from "react-icons/md";
 import { MdCollections } from "react-icons/md";
 
 const SearchTab: React.FC = () => {
     const pathname = usePathname();
     const params = useParams<{ query: string }>();
-    const [totalPhotos, setTotalPhotos] = useState<number>(0);
-    const [totalCollections, setTotalCollections] = useState<number>(0);
+    const totalPhotos = useStore(state => state.numberPhotoSearched);
+    const totalCollections = useStore(state => state.numberCollectionSearched);
+    const updateNumberPhotos = useStore(state => state.updateNumberPhoto);
+    const updateNumberCollections = useStore(state => state.updateNumberCollection);
 
     useEffect(() => {
         (async (query: string) => {
             const dataPhotos = await getSearchPhotos(query, 30, 1);
             const dataCollections = await getSearchCollections(query, 10, 1);
-            setTotalPhotos(dataPhotos?.total);
-            setTotalCollections(dataCollections?.total);
+            updateNumberPhotos(dataPhotos?.total);
+            updateNumberCollections(dataCollections?.total);
         })(params?.query);
     }, []);
 

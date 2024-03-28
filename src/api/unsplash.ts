@@ -1,3 +1,5 @@
+import { useStore } from "@/lib/store";
+
 const apiKeys = [
     process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_1,
     process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_2,
@@ -5,7 +7,8 @@ const apiKeys = [
 ];
 const ENPOINT = process.env.NEXT_PUBLIC_APP_BACKEND_URL;
 
-let currentApiKeyIndex = 0;
+const currentApiKeyIndex = useStore.getState().currentApiKeyIndex;
+const changeApiKeyIndex = useStore.getState().changeApiKey;
 
 export const getListPhotos = async (perPage: number, page: number) => {
     const response = await fetch(
@@ -17,7 +20,7 @@ export const getListPhotos = async (perPage: number, page: number) => {
     }
 
     if (response.status === 401) {
-        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+        changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getListPhotos(perPage, page);
     }
 
@@ -34,7 +37,7 @@ export const getUserInfo = async (username: string) => {
     }
 
     if (response.status === 401) {
-        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+        changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getUserInfo(username);
     }
 
@@ -55,7 +58,7 @@ export const getUserPhotos = async (
     }
 
     if (response.status === 401) {
-        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+        changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getUserPhotos(username, perPage, page);
     }
 
@@ -72,7 +75,7 @@ export const getListCollections = async (perPage: number, page: number) => {
     }
 
     if (response.status === 401) {
-        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+        changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getListCollections(perPage, page);
     }
 
@@ -89,7 +92,7 @@ export const getCollections = async (slug: string) => {
     }
 
     if (response.status === 401) {
-        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+        changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getCollections(slug);
     }
 
@@ -106,7 +109,7 @@ export const getPhotoCollection = async (slug: string) => {
     }
 
     if (response.status === 401) {
-        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+        changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getPhotoCollection(slug);
     }
 
@@ -123,7 +126,7 @@ export const getRelatedCollections = async (slug: string) => {
     }
 
     if (response.status === 401) {
-        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+        changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getRelatedCollections(slug);
     }
 
@@ -140,7 +143,7 @@ export const getImageDetail = async (id: string) => {
     }
 
     if (response.status === 401) {
-        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+        changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getImageDetail(id);
     }
 
@@ -161,7 +164,7 @@ export const getSearchPhotos = async (
     }
 
     if (response.status === 401) {
-        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+        changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getSearchPhotos(query, perPage, page);
     }
 
@@ -182,7 +185,7 @@ export const getSearchCollections = async (
     }
 
     if (response.status === 401) {
-        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+        changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getSearchCollections(query, perPage, page);
     }
 
