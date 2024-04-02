@@ -6,6 +6,7 @@ import { FaHeart, FaChevronDown } from "react-icons/fa";
 import { LuPlus } from "react-icons/lu";
 import Image from "next/image";
 import { getListPhotos } from "@/api/unsplash";
+import { useStore } from "@/lib/store";
 
 interface Photo {
     id: string;
@@ -13,6 +14,7 @@ interface Photo {
     slug: string;
     width: number;
     height: number;
+    liked_by_user: boolean;
     urls: {
         small: string;
     };
@@ -31,6 +33,7 @@ const PhotoContainer: React.FC = () => {
     const [page, setPage] = useState(1);
     const [dataPhotos, setDataPhotos] = useState<Photo[]>([]);
     const [initialLoad, setInitialLoad] = useState(true);
+    const accessToken = useStore((state) => state.accessToken);
 
     const onScroll = () => {
         const isEndPage =
@@ -44,7 +47,7 @@ const PhotoContainer: React.FC = () => {
 
     useEffect(() => {
         (async () => {
-            const data = await getListPhotos(perPage, page);
+            const data = await getListPhotos(perPage, page, accessToken);
 
             if (initialLoad) {
                 setInitialLoad(false);
@@ -79,6 +82,7 @@ const PhotoContainer: React.FC = () => {
                             alt_description={photo.alt_description}
                             width={photo.width}
                             height={photo.height}
+                            isLike={photo.liked_by_user}
                         />
                     ))}
             </div>

@@ -7,6 +7,7 @@ import ImageItem from "./ImageItem";
 import { getSearchPhotos } from "@/api/unsplash";
 import { FaHeart, FaChevronDown } from "react-icons/fa";
 import { LuPlus } from "react-icons/lu";
+import { useStore } from "@/lib/store";
 
 interface Photo {
     id: string;
@@ -14,6 +15,7 @@ interface Photo {
     alt_description: string;
     width: number;
     height: number;
+    liked_by_user: boolean;
     urls: {
         raw: string;
         regular: string;
@@ -36,10 +38,16 @@ const SearchPhotoContainer: React.FC = () => {
     const [page, setPage] = useState(1);
     const perPage = 30;
     const [initialLoad, setInitialLoad] = useState(true);
+    const accessToken = useStore((state) => state.accessToken);
 
     useEffect(() => {
         (async (query: string) => {
-            const userPhotos = await getSearchPhotos(query, perPage, page);
+            const userPhotos = await getSearchPhotos(
+                query,
+                perPage,
+                page,
+                accessToken
+            );
             if (initialLoad) {
                 setInitialLoad(false);
                 setPhotos(userPhotos?.results);
@@ -66,6 +74,7 @@ const SearchPhotoContainer: React.FC = () => {
                                 alt_description={photo.alt_description}
                                 width={photo.width}
                                 height={photo.height}
+                                isLike={photo.liked_by_user}
                             />
                         ))}
                 </div>

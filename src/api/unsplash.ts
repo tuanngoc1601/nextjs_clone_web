@@ -14,9 +14,19 @@ const OAUTH_TOKEN_URL = process.env.NEXT_PUBLIC_APP_OAUTH_TOKEN;
 const currentApiKeyIndex = useStore.getState().currentApiKeyIndex;
 const changeApiKeyIndex = useStore.getState().changeApiKey;
 
-export const getListPhotos = async (perPage: number, page: number) => {
+export const getListPhotos = async (
+    perPage: number,
+    page: number,
+    accessToken: string
+) => {
     const response = await fetch(
-        `${ENPOINT}/photos?client_id=${apiKeys[currentApiKeyIndex]}&per_page=${perPage}&page=${page}`
+        `${ENPOINT}/photos?per_page=${perPage}&page=${page}`,
+        {
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + accessToken,
+            },
+        }
     );
 
     if (!response.ok) {
@@ -25,7 +35,7 @@ export const getListPhotos = async (perPage: number, page: number) => {
 
     if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
-        getListPhotos(perPage, page);
+        getListPhotos(perPage, page, accessToken);
     }
 
     return response.json();
@@ -51,10 +61,17 @@ export const getUserInfo = async (username: string) => {
 export const getUserPhotos = async (
     username: string,
     perPage: number,
-    page: number
+    page: number,
+    accessToken: string
 ) => {
     const response = await fetch(
-        `${ENPOINT}/users/${username}/photos?client_id=${apiKeys[currentApiKeyIndex]}&per_page=${perPage}&page=${page}`
+        `${ENPOINT}/users/${username}/photos?per_page=${perPage}&page=${page}`,
+        {
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + accessToken,
+            },
+        }
     );
 
     if (!response.ok) {
@@ -63,7 +80,7 @@ export const getUserPhotos = async (
 
     if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
-        getUserPhotos(username, perPage, page);
+        getUserPhotos(username, perPage, page, accessToken);
     }
 
     return response.json();
@@ -103,10 +120,13 @@ export const getCollections = async (slug: string) => {
     return response.json();
 };
 
-export const getPhotoCollection = async (slug: string) => {
-    const response = await fetch(
-        `${ENPOINT}/collections/${slug}/photos?client_id=${apiKeys[currentApiKeyIndex]}`
-    );
+export const getPhotoCollection = async (slug: string, accessToken: string) => {
+    const response = await fetch(`${ENPOINT}/collections/${slug}/photos`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
 
     if (!response.ok) {
         throw new Error("Failed fetching photos collection");
@@ -114,7 +134,7 @@ export const getPhotoCollection = async (slug: string) => {
 
     if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
-        getPhotoCollection(slug);
+        getPhotoCollection(slug, accessToken);
     }
 
     return response.json();
@@ -161,10 +181,17 @@ export const getImageDetail = async (id: string, accessToken: string) => {
 export const getSearchPhotos = async (
     query: string,
     perPage: number,
-    page: number
+    page: number,
+    accessToken: string
 ) => {
     const response = await fetch(
-        `${ENPOINT}/search/photos?query=${query}&client_id=${apiKeys[currentApiKeyIndex]}&per_page=${perPage}&page=${page}`
+        `${ENPOINT}/search/photos?query=${query}&per_page=${perPage}&page=${page}`,
+        {
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + accessToken,
+            },
+        }
     );
 
     if (!response.ok) {
@@ -173,7 +200,7 @@ export const getSearchPhotos = async (
 
     if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
-        getSearchPhotos(query, perPage, page);
+        getSearchPhotos(query, perPage, page, accessToken);
     }
 
     return response.json();

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import ImageItem from "./ImageItem";
 import { getPhotoCollection } from "@/api/unsplash";
 import { useParams } from "next/navigation";
+import { useStore } from "@/lib/store";
 
 interface Photo {
     id: string;
@@ -11,6 +12,7 @@ interface Photo {
     slug: string;
     width: number;
     height: number;
+    liked_by_user: boolean;
     urls: {
         raw: string;
         full: string;
@@ -29,10 +31,11 @@ interface Photo {
 const CollectionPhotos = () => {
     const [photos, setPhotos] = useState<Photo[]>([]);
     const params = useParams<{ collectionId: string }>();
+    const accessToken = useStore((state) => state.accessToken);
 
     useEffect(() => {
         (async () => {
-            const data = await getPhotoCollection(params.collectionId);
+            const data = await getPhotoCollection(params.collectionId, accessToken);
             setPhotos(data);
         })();
     }, [params.collectionId]);
@@ -52,6 +55,7 @@ const CollectionPhotos = () => {
                         alt_description={photo.alt_description}
                         width={photo.width}
                         height={photo.height}
+                        isLike={photo.liked_by_user}
                     />
                 ))}
         </div>

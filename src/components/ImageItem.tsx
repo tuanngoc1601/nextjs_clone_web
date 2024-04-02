@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaHeart } from "react-icons/fa";
 import { LuPlus } from "react-icons/lu";
 import { FaArrowDown } from "react-icons/fa6";
 import Link from "next/link";
+import { useStore } from "@/lib/store";
+import { likePhoto, unlikePhoto } from "@/api/unsplash";
 
 interface ImageProps {
     slug: string;
@@ -14,10 +18,31 @@ interface ImageProps {
     username: string;
     width: number;
     height: number;
+    isLike: boolean;
 }
 
 const ImageItem: React.FC<ImageProps> = (props) => {
     const [loading, setLoading] = useState(true);
+    const id = props?.slug.slice(props?.slug.length - 11);
+    const accessToken = useStore((state) => state.accessToken);
+    const [isLikePhoto, setIsLikePhoto] = useState<boolean>(false);
+
+    const handleReactPhoto = async () => {
+        if (accessToken && accessToken !== "") {
+            if (!isLikePhoto) {
+                setIsLikePhoto(true);
+                await likePhoto(id, accessToken);
+            } else {
+                setIsLikePhoto(false);
+                await unlikePhoto(id, accessToken);
+            }
+        }
+    };
+
+    useEffect(() => {
+        setIsLikePhoto(props?.isLike);
+    }, []);
+
     return (
         <div className="image-container relative">
             <Link href={`/photos/${props?.slug}`} className="cursor-zoom-in">
@@ -34,22 +59,36 @@ const ImageItem: React.FC<ImageProps> = (props) => {
                         onLoad={() => setLoading(false)}
                     />
                 )}
-                <div className="overlay flex flex-col items-center justify-between p-4">
-                    <div className="w-full flex flex-row items-center justify-end gap-x-2">
-                        <button className="px-3 py-2 text-base text-iconColor rounded border-black shadown-sm bg-bgButtonIcon hover:text-textPrimary hover:bg-white">
-                            <FaHeart />
-                        </button>
-                        <button className="px-3 py-2 text-base text-iconColor rounded border-black shadown-sm bg-bgButtonIcon hover:text-textPrimary hover:bg-white">
-                            <LuPlus />
-                        </button>
-                    </div>
-                    <div className="w-full flex flex-row items-center justify-end">
-                        <button className="px-3 py-2 text-base text-iconColor rounded border-black shadown-sm bg-bgButtonIcon hover:text-textPrimary hover:bg-white">
-                            <FaArrowDown />
-                        </button>
-                    </div>
-                </div>
+                <div className="overlay"></div>
             </Link>
+
+            <div className="absolute top-0 right-0 pt-4 pe-4 flex flex-col items-end justify-between opacity-0 reaction">
+                <div className="w-full flex flex-row items-center justify-end gap-x-2 relative top-0 right-0">
+                    <button
+                        className={`${
+                            isLikePhoto
+                                ? "bg-bgLike"
+                                : "bg-bgButtonIcon hover:text-textPrimary hover:bg-white hover:border-textSecondary"
+                        } text-base text-iconColor border-black font-medium px-3 py-2 rounded shadow-sm`}
+                        onClick={handleReactPhoto}
+                    >
+                        <FaHeart
+                            className={`${
+                                isLikePhoto ? "text-white" : "text-textPrimary"
+                            }`}
+                        />
+                    </button>
+                    <button className="px-3 py-2 text-base text-iconColor rounded border-black shadown-sm bg-bgButtonIcon hover:text-textPrimary hover:bg-white">
+                        <LuPlus />
+                    </button>
+                </div>
+            </div>
+
+            <div className="absolute right-0 bottom-0 pe-4 pb-4 flex flex-row items-center justify-end opacity-0 download-photo">
+                <button className="px-3 py-2 text-base text-iconColor rounded border-black shadown-sm bg-bgButtonIcon hover:text-textPrimary hover:bg-white">
+                    <FaArrowDown />
+                </button>
+            </div>
 
             <div className="opacity-0 user-info">
                 <div className="w-fit flex flex-row items-center justify-start gap-x-2 cursor-pointer absolute bottom-0 ps-4 pb-4">
