@@ -11,14 +11,19 @@ import { MdCollections } from "react-icons/md";
 const SearchTab: React.FC = () => {
     const pathname = usePathname();
     const params = useParams<{ query: string }>();
-    const totalPhotos = useStore(state => state.numberPhotoSearched);
-    const totalCollections = useStore(state => state.numberCollectionSearched);
-    const updateNumberPhotos = useStore(state => state.updateNumberPhoto);
-    const updateNumberCollections = useStore(state => state.updateNumberCollection);
+    const totalPhotos = useStore((state) => state.numberPhotoSearched);
+    const totalCollections = useStore(
+        (state) => state.numberCollectionSearched
+    );
+    const accessToken = useStore((state) => state.accessToken);
+    const updateNumberPhotos = useStore((state) => state.updateNumberPhoto);
+    const updateNumberCollections = useStore(
+        (state) => state.updateNumberCollection
+    );
 
     useEffect(() => {
         (async (query: string) => {
-            const dataPhotos = await getSearchPhotos(query, 30, 1);
+            const dataPhotos = await getSearchPhotos(query, 30, 1, accessToken);
             const dataCollections = await getSearchCollections(query, 10, 1);
             updateNumberPhotos(dataPhotos?.total);
             updateNumberCollections(dataCollections?.total);
