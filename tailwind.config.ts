@@ -48,6 +48,7 @@ const config: Config = {
         bgHover: "#e7e7e7",
         bgSection: "#f5f5f5",
         iconColor: "#555555",
+        bgLike: "#f15151",
         bgButtonIcon: "#ffffffe6",
         bgHoverItem: "#e1e1e1",
         bgModal: "#0009",

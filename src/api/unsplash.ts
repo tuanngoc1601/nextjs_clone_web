@@ -1,11 +1,15 @@
 import { useStore } from "@/lib/store";
 
 const apiKeys = [
+    process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_3,
     process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_1,
     process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_2,
-    process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_3,
 ];
 const ENPOINT = process.env.NEXT_PUBLIC_APP_BACKEND_URL;
+const SECRET_KEY = process.env.NEXT_PUBLIC_APP_SECRET_KEY;
+const REDIRECT_URI = process.env.NEXT_PUBLIC_APP_REDIRECT_URI;
+const authorization_code = process.env.NEXT_PUBLIC_APP_AUTHORIZATION_CODE;
+const OAUTH_TOKEN_URL = process.env.NEXT_PUBLIC_APP_OAUTH_TOKEN;
 
 const currentApiKeyIndex = useStore.getState().currentApiKeyIndex;
 const changeApiKeyIndex = useStore.getState().changeApiKey;
@@ -19,7 +23,7 @@ export const getListPhotos = async (perPage: number, page: number) => {
         throw new Error("Failed fetching list photos");
     }
 
-    if (response.status === 401) {
+    if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getListPhotos(perPage, page);
     }
@@ -36,7 +40,7 @@ export const getUserInfo = async (username: string) => {
         throw new Error("Failed fetching user information");
     }
 
-    if (response.status === 401) {
+    if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getUserInfo(username);
     }
@@ -57,7 +61,7 @@ export const getUserPhotos = async (
         throw new Error("Failed fetching user's photos");
     }
 
-    if (response.status === 401) {
+    if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getUserPhotos(username, perPage, page);
     }
@@ -74,7 +78,7 @@ export const getListCollections = async (perPage: number, page: number) => {
         throw new Error("Failed fetching collections list");
     }
 
-    if (response.status === 401) {
+    if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getListCollections(perPage, page);
     }
@@ -91,7 +95,7 @@ export const getCollections = async (slug: string) => {
         throw new Error("Failed fetching user's collections");
     }
 
-    if (response.status === 401) {
+    if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getCollections(slug);
     }
@@ -108,7 +112,7 @@ export const getPhotoCollection = async (slug: string) => {
         throw new Error("Failed fetching photos collection");
     }
 
-    if (response.status === 401) {
+    if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getPhotoCollection(slug);
     }
@@ -125,7 +129,7 @@ export const getRelatedCollections = async (slug: string) => {
         throw new Error("Failed fetching collections related");
     }
 
-    if (response.status === 401) {
+    if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getRelatedCollections(slug);
     }
@@ -133,18 +137,22 @@ export const getRelatedCollections = async (slug: string) => {
     return response.json();
 };
 
-export const getImageDetail = async (id: string) => {
-    const response = await fetch(
-        `${ENPOINT}/photos/${id}?client_id=${apiKeys[currentApiKeyIndex]}`
-    );
+export const getImageDetail = async (id: string, accessToken: string) => {
+    const response = await fetch(`${ENPOINT}/photos/${id}`, {
+        method: "GET",
+        cache: "no-cache",
+        headers: {
+            Authorization: "Bearer " + accessToken,
+        },
+    });
 
     if (!response.ok) {
         throw new Error("Error fetching image detail");
     }
 
-    if (response.status === 401) {
+    if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
-        getImageDetail(id);
+        getImageDetail(id, accessToken);
     }
 
     return response.json();
@@ -163,7 +171,7 @@ export const getSearchPhotos = async (
         throw new Error("Error fetching search photos");
     }
 
-    if (response.status === 401) {
+    if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getSearchPhotos(query, perPage, page);
     }
@@ -184,9 +192,72 @@ export const getSearchCollections = async (
         throw new Error("Error fetching search collections");
     }
 
-    if (response.status === 401) {
+    if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getSearchCollections(query, perPage, page);
+    }
+
+    return response.json();
+};
+
+export const loginUser = async () => {
+    const response = await fetch(
+        `${OAUTH_TOKEN_URL}?client_secret=${SECRET_KEY}&client_id=${apiKeys[currentApiKeyIndex]}&redirect_uri=${REDIRECT_URI}&code=${authorization_code}&grand_type=authorization_code`,
+        {
+            method: "POST",
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Error login request");
+    }
+
+    if (response.status === 403) {
+        changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
+        loginUser();
+    }
+
+    return response.json();
+};
+
+export const likePhoto = async (id: string, accessToken: string) => {
+    if (accessToken === "") {
+        return {
+            status: 401,
+            message: "Unauthorized",
+        };
+    }
+    const response = await fetch(`${ENPOINT}/photos/${id}/like`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("The access token is invalid");
+    }
+
+    return response.json();
+};
+
+export const unlikePhoto = async (id: string, accessToken: string) => {
+    if (accessToken === "") {
+        return {
+            status: 401,
+            message: "Unauthorized",
+        };
+    }
+
+    const response = await fetch(`${ENPOINT}/photos/${id}/like`, {
+        method: "DELETE",
+        headers: {
+            Authorization: "Bearer " + accessToken,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("The access token is invalid");
     }
 
     return response.json();

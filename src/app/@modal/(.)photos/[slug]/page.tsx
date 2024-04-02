@@ -2,13 +2,13 @@ import React from "react";
 import { getImageDetail } from "@/api/unsplash";
 import Modal from "@/components/Modal";
 import Image from "next/image";
-import { FaHeart, FaChevronDown } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";
 import {
     IoIosShareAlt,
     IoMdInformationCircle,
     IoIosMore,
 } from "react-icons/io";
+import { useStore } from "@/lib/store";
+import HeaderPhoto from "@/components/HeaderPhoto";
 
 export default async function PhotoDetailModal({
     params,
@@ -16,7 +16,8 @@ export default async function PhotoDetailModal({
     params: { slug: string };
 }) {
     const id = params?.slug.slice(params?.slug.length - 11);
-    const photo = await getImageDetail(id);
+    const accessToken = useStore.getState().accessToken;
+    const photo = await getImageDetail(id, accessToken);
 
     const createdAt = photo?.created_at ? new Date(photo.created_at) : "";
 
@@ -24,41 +25,13 @@ export default async function PhotoDetailModal({
         <Modal>
             <div className="w-full h-full overflow-auto flex flex-col items-center justify-center rounded-lg bg-white modal-content p-4">
                 <div className="bg-white h-14 w-full flex flex-row items-center justify-between sticky top-0 px-5">
-                    <div className="h-62 flex flex-row items-center justify-center gap-x-2">
-                        {photo?.user?.profile_image?.large && (
-                            <Image
-                                src={photo.user.profile_image.large}
-                                alt={photo.user?.name ?? "image"}
-                                width={32}
-                                height={32}
-                                className="rounded-full cursor-pointer"
-                            />
-                        )}
-                        <div className="flex flex-col overflow-hidden whitespace-nowrap">
-                            <h3 className="block text-15px leading-5 font-medium text-textSecondary cursor-pointer">
-                                {photo?.user?.name}
-                            </h3>
-                            <p className="text-textPrimary text-xs hover:text-textSecondary cursor-pointer">
-                                {photo?.user?.username}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex flex-row items-center justify-center gap-x-2">
-                        <button className="bg-white text-sm text-textPrimary font-medium border border-borderColor px-3 py-2 rounded hover:text-textSecondary hover:border-textSecondary shadow">
-                            <FaHeart />
-                        </button>
-                        <button className="bg-white text-sm text-textPrimary font-medium border border-borderColor px-3 py-2 rounded hover:text-textSecondary hover:border-textSecondary shadow">
-                            <FaPlus />
-                        </button>
-                        <div className="flex flex-row items-center justify-center rounded-md shadow">
-                            <button className="h-8 inline-flex items-center justify-center font-medium bg-white text-sm text-textPrimary border translate-x-px border-borderColor rounded-s px-3 py-2 hover:text-textSecondary hover:border-textSecondary">
-                                Download
-                            </button>
-                            <button className="h-8 inline-flex items-center justify-center text-sm bg-white text-textPrimary border border-borderColor rounded-e px-3 py-2 hover:text-textSecondary hover:border-textSecondary hover:z-10">
-                                <FaChevronDown />
-                            </button>
-                        </div>
-                    </div>
+                    <HeaderPhoto
+                        id={id}
+                        username={photo?.user?.username}
+                        name={photo?.user?.name}
+                        userImageUrl={photo?.user?.profile_image?.large}
+                        isLike={photo?.liked_by_user}
+                    />
                 </div>
 
                 <div className="w-full px-5 flex flex-row items-center justify-center">

@@ -7,9 +7,11 @@ import Image from "next/image";
 import { FaBars } from "react-icons/fa6";
 import { IoIosSearch, IoMdTrendingUp, IoIosClose } from "react-icons/io";
 import { TbLineScan } from "react-icons/tb";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaBell } from "react-icons/fa";
 import { slugify } from "@/utils/helper";
 import { useRecentSearches } from "@/hooks/recentSearch";
+import { useStore } from "@/lib/store";
+import { loginUser } from "@/api/unsplash";
 
 const Header = () => {
     const [isOpenDropdown, setIsOpenDropdown] = useState(false);
@@ -23,6 +25,9 @@ const Header = () => {
     const router = useRouter();
     const { recentSearches, addRecentSearch, clearRecentSearches } =
         useRecentSearches();
+    const login = useStore((state) => state.login);
+    const reset = useStore((state) => state.reset);
+    const accessToken = useStore((state) => state.accessToken);
 
     const handleOnChangeType = (e: any) => {
         setType(e.target.value);
@@ -33,11 +38,6 @@ const Header = () => {
         setOnFocus(true);
         setIsOpenPopup(true);
         setIsOpenDropdown(false);
-    };
-
-    const onBlurSearchQuery = () => {
-        setOnFocus(false);
-        setIsOpenPopup(false);
     };
 
     const handleSearchSubmit = (e: any) => {
@@ -51,6 +51,10 @@ const Header = () => {
             );
         }
         textFieldRef.current?.blur();
+    };
+
+    const resetStore = () => {
+        reset();
     };
 
     useEffect(() => {
@@ -118,7 +122,6 @@ const Header = () => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onFocus={onFocusSearchQuery}
-                                // onBlur={onBlurSearchQuery}
                                 required
                             />
                         </form>
@@ -376,7 +379,11 @@ const Header = () => {
                         </div>
                     )}
                 </div>
-                <div className="md:flex md:flex-row flex-none lg:divide-x gap-8 sm:hidden">
+                <div
+                    className={`md:flex md:flex-row flex-none ${
+                        accessToken === "" ? "lg:divide-x" : ""
+                    } gap-8 sm:hidden`}
+                >
                     <div className="lg:flex lg:flex-row text-sm md:hidden items-center justify-center font-medium gap-x-8">
                         <span className="cursor-pointer text-textPrimary hover:text-textSecondary">
                             Explore
@@ -389,12 +396,31 @@ const Header = () => {
                         </span>
                     </div>
                     <div className="flex flex-row items-center font-medium text-textPrimary justify-center gap-x-8">
-                        <span className="text-sm cursor-pointer ms-5 hover:text-textSecondary">
-                            Log in
-                        </span>
-                        <button className="text-sm border border-borderColor p-2 shadow-sm rounded-md hover:text-textSecondary hover:border-textSecondary">
+                        {accessToken === "" && (
+                            <span className="text-sm cursor-pointer ms-5 hover:text-textSecondary">
+                                Log in
+                            </span>
+                        )}
+                        <button
+                            className="text-sm border border-borderColor p-2 shadow-md rounded-md hover:text-textSecondary hover:border-textSecondary"
+                            onClick={resetStore}
+                        >
                             Submit a photo
                         </button>
+                        {accessToken !== "" && (
+                            <>
+                                <span className="text-xl cursor-pointer text-textPrimary hover:text-textSecondary">
+                                    <FaBell />
+                                </span>
+                                <Image
+                                    src="https://images.unsplash.com/placeholder-avatars/extra-large.jpg?bg=fff&crop=faces&dpr=2&h=32&w=32&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+                                    alt="avatar"
+                                    width={32}
+                                    height={32}
+                                    className="rounded-full bg-bgInputSearch cursor-pointer"
+                                />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
