@@ -22,7 +22,7 @@ const initialState: State = {
     currentApiKeyIndex: 0,
     numberPhotoSearched: 0,
     numberCollectionSearched: 0,
-    accessToken: "2AesKiLU4yOZAWAQHYUSXoNcrt52qcDHVsEF_xvSW7Y",
+    accessToken: "d7er9xVpiOb_HowqmbEAM8eGs8whMlJVYmJo3JABSS4",
     isLikePhoto: false,
 };
 
