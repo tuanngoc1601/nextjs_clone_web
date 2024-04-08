@@ -6,7 +6,7 @@ interface State {
     numberPhotoSearched: number;
     numberCollectionSearched: number;
     accessToken: string;
-    isLikePhoto: boolean;
+    likedPhotos: String[];
 }
 
 interface Action {
@@ -14,7 +14,7 @@ interface Action {
     updateNumberCollection: (count: number) => void;
     changeApiKey: (index: number) => void;
     login: (accessToken: string) => void;
-    updateLikePhoto: (status: boolean) => void;
+    addLikedPhoto: (id: string) => void;
     reset: () => void;
 }
 
@@ -22,8 +22,8 @@ const initialState: State = {
     currentApiKeyIndex: 0,
     numberPhotoSearched: 0,
     numberCollectionSearched: 0,
-    accessToken: "d7er9xVpiOb_HowqmbEAM8eGs8whMlJVYmJo3JABSS4",
-    isLikePhoto: false,
+    accessToken: "",
+    likedPhotos: [],
 };
 
 export const useStore = create<
@@ -41,8 +41,17 @@ export const useStore = create<
                 set((state) => ({ ...state, currentApiKeyIndex: index })),
             login: (accessToken: string) =>
                 set((state) => ({ ...state, accessToken: accessToken })),
-            updateLikePhoto: (status: boolean) =>
-                set((state) => ({ ...state, isLikePhoto: status })),
+            addLikedPhoto: (id: string) =>
+                set((state) => {
+                    if (!state.likedPhotos.includes(id)) {
+                        state.likedPhotos.push(id);
+                    } else {
+                        state.likedPhotos = state.likedPhotos.filter(
+                            (liked) => liked !== id
+                        );
+                    }
+                    return state;
+                }),
             reset: () => {
                 set(initialState);
             },

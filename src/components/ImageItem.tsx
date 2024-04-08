@@ -25,23 +25,27 @@ const ImageItem: React.FC<ImageProps> = (props) => {
     const [loading, setLoading] = useState(true);
     const id = props?.slug.slice(props?.slug.length - 11);
     const accessToken = useStore((state) => state.accessToken);
+    const likedPhotos = useStore((state) => state.likedPhotos);
+    const addLikedPhotos = useStore((state) => state.addLikedPhoto);
     const [isLikePhoto, setIsLikePhoto] = useState<boolean>(false);
 
     const handleReactPhoto = async () => {
         if (accessToken && accessToken !== "") {
             if (!isLikePhoto) {
                 setIsLikePhoto(true);
+                addLikedPhotos(id);
                 await likePhoto(id, accessToken);
             } else {
                 setIsLikePhoto(false);
+                addLikedPhotos(id);
                 await unlikePhoto(id, accessToken);
             }
         }
     };
 
     useEffect(() => {
-        setIsLikePhoto(props?.isLike);
-    }, []);
+        setIsLikePhoto(likedPhotos.includes(id) ? true : false);
+    }, [likedPhotos]);
 
     return (
         <div className="image-container relative">

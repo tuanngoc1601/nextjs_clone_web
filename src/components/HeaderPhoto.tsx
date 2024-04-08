@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { likePhoto, unlikePhoto } from "@/api/unsplash";
 import { useStore } from "@/lib/store";
 import Link from "next/link";
@@ -17,24 +17,27 @@ interface Props {
 
 const HeaderPhoto: React.FC<Props> = (props) => {
     const accessToken = useStore((state) => state.accessToken);
-    const isLikePhoto = useStore((state) => state.isLikePhoto);
-    const updateLikePhoto = useStore((state) => state.updateLikePhoto);
+    const likedPhotos = useStore((state) => state.likedPhotos);
+    const addLikedPhoto = useStore((state) => state.addLikedPhoto);
+    const [isLikedPhoto, setIsLikedPhoto] = useState<boolean>(false);
 
     const handleReactPhoto = async () => {
         if (accessToken && accessToken !== "") {
-            if (!isLikePhoto) {
-                updateLikePhoto(true);
+            if (!isLikedPhoto) {
+                setIsLikedPhoto(true);
+                addLikedPhoto(props?.id);
                 await likePhoto(props?.id, accessToken);
             } else {
-                updateLikePhoto(false);
+                setIsLikedPhoto(false);
+                addLikedPhoto(props?.id);
                 await unlikePhoto(props?.id, accessToken);
             }
         }
     };
 
     useEffect(() => {
-        updateLikePhoto(props?.isLike);
-    }, [props?.id]);
+        setIsLikedPhoto(likedPhotos.includes(props?.id) ? true : false);
+    }, [props?.id, likedPhotos]);
 
     return (
         <>
@@ -67,7 +70,7 @@ const HeaderPhoto: React.FC<Props> = (props) => {
                 <div className="flex flex-row items-center justify-center gap-x-2">
                     <button
                         className={`${
-                            isLikePhoto
+                            isLikedPhoto
                                 ? "bg-bgLike"
                                 : "bg-white border border-borderColor"
                         } text-sm text-textPrimary font-medium px-3 py-2 rounded hover:text-textSecondary hover:border-textSecondary shadow`}
@@ -75,7 +78,7 @@ const HeaderPhoto: React.FC<Props> = (props) => {
                     >
                         <FaHeart
                             className={`${
-                                isLikePhoto ? "text-white" : "text-textPrimary"
+                                isLikedPhoto ? "text-white" : "text-textPrimary"
                             }`}
                         />
                     </button>
