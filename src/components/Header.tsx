@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { FaBars } from "react-icons/fa6";
@@ -12,6 +12,8 @@ import { slugify } from "@/utils/helper";
 import { useRecentSearches } from "@/hooks/recentSearch";
 import { useStore } from "@/lib/store";
 import { loginUser } from "@/api/unsplash";
+import LoginSection from "./LoginSection";
+import { handleLoginServer } from "@/hooks/actions/loginSection";
 
 const Header = () => {
     const [isOpenDropdown, setIsOpenDropdown] = useState(false);
@@ -28,6 +30,10 @@ const Header = () => {
     const login = useStore((state) => state.login);
     const reset = useStore((state) => state.reset);
     const accessToken = useStore((state) => state.accessToken);
+    const ENPOINT_AUTHORIZE = process.env.NEXT_PUBLIC_APP_OAUTH_AUTHORIZE;
+    const client_id = process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_1;
+    const redirect_uri = process.env.NEXT_PUBLIC_APP_REDIRECT_URI;
+    const code = useSearchParams().get("code");
 
     const handleOnChangeType = (e: any) => {
         setType(e.target.value);
@@ -55,6 +61,12 @@ const Header = () => {
 
     const resetStore = () => {
         reset();
+    };
+
+    const handleLogin = async () => {
+        router.push(
+            `${ENPOINT_AUTHORIZE}?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code&scope=public+write_likes`
+        );
     };
 
     useEffect(() => {
@@ -395,33 +407,7 @@ const Header = () => {
                             Unsplash+
                         </span>
                     </div>
-                    <div className="flex flex-row items-center font-medium text-textPrimary justify-center gap-x-8">
-                        {accessToken === "" && (
-                            <span className="text-sm cursor-pointer ms-5 hover:text-textSecondary">
-                                Log in
-                            </span>
-                        )}
-                        <button
-                            className="text-sm border border-borderColor p-2 shadow-md rounded-md hover:text-textSecondary hover:border-textSecondary"
-                            onClick={resetStore}
-                        >
-                            Submit a photo
-                        </button>
-                        {accessToken !== "" && (
-                            <>
-                                <span className="text-xl cursor-pointer text-textPrimary hover:text-textSecondary">
-                                    <FaBell />
-                                </span>
-                                <Image
-                                    src="https://images.unsplash.com/placeholder-avatars/extra-large.jpg?bg=fff&crop=faces&dpr=2&h=32&w=32&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
-                                    alt="avatar"
-                                    width={32}
-                                    height={32}
-                                    className="rounded-full bg-bgInputSearch cursor-pointer"
-                                />
-                            </>
-                        )}
-                    </div>
+                    <LoginSection code={code ?? ""} />
                 </div>
             </div>
             <button className="px-2 flex-none text-xl text-textPrimary">

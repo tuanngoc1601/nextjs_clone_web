@@ -1,14 +1,13 @@
 import { useStore } from "@/lib/store";
 
 const apiKeys = [
-    process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_3,
-    process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_1,
     process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_2,
+    process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_1,
+    process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_3,
 ];
 const ENPOINT = process.env.NEXT_PUBLIC_APP_BACKEND_URL;
 const SECRET_KEY = process.env.NEXT_PUBLIC_APP_SECRET_KEY;
 const REDIRECT_URI = process.env.NEXT_PUBLIC_APP_REDIRECT_URI;
-const authorization_code = process.env.NEXT_PUBLIC_APP_AUTHORIZATION_CODE;
 const OAUTH_TOKEN_URL = process.env.NEXT_PUBLIC_APP_OAUTH_TOKEN;
 
 const currentApiKeyIndex = useStore.getState().currentApiKeyIndex;
@@ -20,7 +19,11 @@ export const getListPhotos = async (
     accessToken: string
 ) => {
     const response = await fetch(
-        `${ENPOINT}/photos?per_page=${perPage}&page=${page}`,
+        `${ENPOINT}/photos?per_page=${perPage}&page=${page}${
+            accessToken === ""
+                ? `&client_id=${apiKeys[currentApiKeyIndex]}`
+                : ""
+        }`,
         {
             method: "GET",
             headers: {
@@ -65,7 +68,11 @@ export const getUserPhotos = async (
     accessToken: string
 ) => {
     const response = await fetch(
-        `${ENPOINT}/users/${username}/photos?per_page=${perPage}&page=${page}`,
+        `${ENPOINT}/users/${username}/photos?per_page=${perPage}&page=${page}${
+            accessToken === ""
+                ? `&client_id=${apiKeys[currentApiKeyIndex]}`
+                : ""
+        }`,
         {
             method: "GET",
             headers: {
@@ -121,12 +128,17 @@ export const getCollections = async (slug: string) => {
 };
 
 export const getPhotoCollection = async (slug: string, accessToken: string) => {
-    const response = await fetch(`${ENPOINT}/collections/${slug}/photos`, {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-    });
+    const response = await fetch(
+        `${ENPOINT}/collections/${slug}/photos${
+            accessToken === "" ? `?client_id=${apiKeys[currentApiKeyIndex]}` : ""
+        }`,
+        {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        }
+    );
 
     if (!response.ok) {
         throw new Error("Failed fetching photos collection");
@@ -158,14 +170,20 @@ export const getRelatedCollections = async (slug: string) => {
 };
 
 export const getImageDetail = async (id: string, accessToken: string) => {
-    const response = await fetch(`${ENPOINT}/photos/${id}`, {
-        method: "GET",
-        cache: "no-cache",
-        headers: {
-            Authorization: "Bearer " + accessToken,
-        },
-    });
-
+    const response = await fetch(
+        `${ENPOINT}/photos/${id}${
+            accessToken === ""
+                ? `?client_id=${apiKeys[currentApiKeyIndex]}`
+                : ""
+        }`,
+        {
+            method: "GET",
+            cache: "no-cache",
+            headers: {
+                Authorization: "Bearer " + accessToken,
+            },
+        }
+    );
     if (!response.ok) {
         throw new Error("Error fetching image detail");
     }
@@ -174,7 +192,6 @@ export const getImageDetail = async (id: string, accessToken: string) => {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
         getImageDetail(id, accessToken);
     }
-
     return response.json();
 };
 
@@ -185,7 +202,11 @@ export const getSearchPhotos = async (
     accessToken: string
 ) => {
     const response = await fetch(
-        `${ENPOINT}/search/photos?query=${query}&per_page=${perPage}&page=${page}`,
+        `${ENPOINT}/search/photos?query=${query}&per_page=${perPage}&page=${page}${
+            accessToken === ""
+                ? `&client_id=${apiKeys[currentApiKeyIndex]}`
+                : ""
+        }`,
         {
             method: "GET",
             headers: {
@@ -227,13 +248,18 @@ export const getSearchCollections = async (
     return response.json();
 };
 
-export const loginUser = async () => {
-    const response = await fetch(
-        `${OAUTH_TOKEN_URL}?client_secret=${SECRET_KEY}&client_id=${apiKeys[currentApiKeyIndex]}&redirect_uri=${REDIRECT_URI}&code=${authorization_code}&grand_type=authorization_code`,
-        {
-            method: "POST",
-        }
-    );
+export const loginUser = async (authorization_code: string) => {
+    const response = await fetch(`${OAUTH_TOKEN_URL}`, {
+        method: "POST",
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+            grant_type: "authorization_code",
+            client_id: `${apiKeys[currentApiKeyIndex]}`,
+            client_secret: `${SECRET_KEY}`,
+            code: `${authorization_code}`,
+            redirect_uri: `${REDIRECT_URI}`,
+        }),
+    });
 
     if (!response.ok) {
         throw new Error("Error login request");
@@ -241,7 +267,7 @@ export const loginUser = async () => {
 
     if (response.status === 403) {
         changeApiKeyIndex((currentApiKeyIndex + 1) % apiKeys.length);
-        loginUser();
+        loginUser(authorization_code);
     }
 
     return response.json();
