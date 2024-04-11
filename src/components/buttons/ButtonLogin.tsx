@@ -14,6 +14,6 @@ export default function LoginButton({ accessToken }: { accessToken: string }) {
     }, [accessToken]);
 
     return (
-        <></>
+        <div>Login</div>
     );
 }

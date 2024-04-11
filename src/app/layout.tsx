@@ -14,7 +14,7 @@ export default function RootLayout({
     modal: React.ReactNode;
 }) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning={false}>
             <body>
                 <main className="w-full min-h-screen h-auto flex flex-col items-center justify-start bg-white">
                     <Header />

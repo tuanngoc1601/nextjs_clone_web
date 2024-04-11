@@ -407,7 +407,7 @@ const Header = () => {
                             Unsplash+
                         </span>
                     </div>
-                    <LoginSection code={code ?? ""} />
+                    <LoginSection />
                 </div>
             </div>
             <button className="px-2 flex-none text-xl text-textPrimary">

@@ -1,31 +1,34 @@
+"use client";
+
 import React from "react";
 import { useStore } from "@/lib/store";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { FaBell } from "react-icons/fa";
 import { SubmitPhoto } from "./buttons/SubmitPhoto";
 
-export default function LoginSection({ code }: { code: string }) {
-    const accessToken = useStore.getState().accessToken;
+export default function LoginSection() {
+    const accessToken = useStore((state) => state.accessToken);
+    const router = useRouter();
     const ENPOINT_AUTHORIZE = process.env.NEXT_PUBLIC_APP_OAUTH_AUTHORIZE;
     const client_id = process.env.NEXT_PUBLIC_UNSPLASH_CLIENT_ID_2;
     const redirect_uri = process.env.NEXT_PUBLIC_APP_REDIRECT_URI;
 
-    function getAuthorizationCode() {
-        redirect(`${ENPOINT_AUTHORIZE}?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code&scope=public+write_likes`);
-    }
+    const getAuthorizationCode = () => {
+        router.push(
+            `${ENPOINT_AUTHORIZE}?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code&scope=public+write_likes`
+        );
+    };
 
     return (
         <div className="flex flex-row items-center font-medium text-textPrimary justify-center gap-x-8">
             {accessToken === "" && (
-                <form action={getAuthorizationCode}>
-                    <button
-                        className="text-sm cursor-pointer ms-5 hover:text-textSecondary"
-                        type="submit"
-                    >
-                        Log in
-                    </button>
-                </form>
+                <button
+                    className="text-sm cursor-pointer ms-5 hover:text-textSecondary"
+                    onClick={getAuthorizationCode}
+                >
+                    Log in
+                </button>
             )}
             <SubmitPhoto />
             {accessToken !== "" && (
