@@ -8,21 +8,10 @@ import { FaArrowDown } from "react-icons/fa6";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { likePhoto, unlikePhoto } from "@/api/unsplash";
-
-interface ImageProps {
-    slug: string;
-    alt_description: string;
-    imageUrl: string;
-    userImageUrl: string;
-    name: string;
-    username: string;
-    width: number;
-    height: number;
-    isLike: boolean;
-}
+import { ImageProps } from "@/lib/types";
 
 const ImageItem: React.FC<ImageProps> = (props) => {
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
     const id = props?.slug.slice(props?.slug.length - 11);
     const accessToken = useStore((state) => state.accessToken);
     const likedPhotos = useStore((state) => state.likedPhotos);
@@ -56,11 +45,13 @@ const ImageItem: React.FC<ImageProps> = (props) => {
                         alt={props?.alt_description ?? "image"}
                         width={500}
                         height={500}
-                        className={`${loading ? "blur" : "opacity-100"}`}
+                        // className={`${loading ? "blur" : "opacity-100"}`}
                         style={{
                             aspectRatio: `${props?.width} / ${props?.height}`,
                         }}
-                        onLoad={() => setLoading(false)}
+                        placeholder="blur"
+                        blurDataURL={props?.blurHash}
+                        // onLoad={() => setLoading(false)}
                     />
                 )}
                 <div className="overlay"></div>

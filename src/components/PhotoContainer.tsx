@@ -7,26 +7,8 @@ import { LuPlus } from "react-icons/lu";
 import Image from "next/image";
 import { getListPhotos } from "@/api/unsplash";
 import { useStore } from "@/lib/store";
-
-interface Photo {
-    id: string;
-    alt_description: string;
-    slug: string;
-    width: number;
-    height: number;
-    liked_by_user: boolean;
-    urls: {
-        small: string;
-    };
-    user: {
-        name: string;
-        profile_image: {
-            small: string;
-            large: string;
-        };
-        username: string;
-    };
-}
+import { getDataWithBlurUrl } from "@/utils/getBase64";
+import { Photo } from "@/lib/types";
 
 const PhotoContainer: React.FC = () => {
     const [perPage, setPerPage] = useState(30);
@@ -49,11 +31,13 @@ const PhotoContainer: React.FC = () => {
         (async () => {
             const data = await getListPhotos(perPage, page, accessToken);
 
+            const dataWithBlurHash = await getDataWithBlurUrl(data);
+
             if (initialLoad) {
                 setInitialLoad(false);
-                setDataPhotos(data);
+                setDataPhotos(dataWithBlurHash);
             } else {
-                setDataPhotos((prev) => [...prev, ...data]);
+                setDataPhotos((prev) => [...prev, ...dataWithBlurHash]);
             }
         })();
     }, [perPage, page]);
@@ -76,6 +60,7 @@ const PhotoContainer: React.FC = () => {
                             key={index}
                             slug={photo.slug}
                             imageUrl={photo.urls?.small}
+                            blurHash={photo.blurHash}
                             userImageUrl={photo.user?.profile_image?.large}
                             name={photo.user?.name}
                             username={photo.user?.username}

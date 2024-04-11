@@ -8,29 +8,8 @@ import { getSearchPhotos } from "@/api/unsplash";
 import { FaHeart, FaChevronDown } from "react-icons/fa";
 import { LuPlus } from "react-icons/lu";
 import { useStore } from "@/lib/store";
-
-interface Photo {
-    id: string;
-    slug: string;
-    alt_description: string;
-    width: number;
-    height: number;
-    liked_by_user: boolean;
-    urls: {
-        raw: string;
-        regular: string;
-        full: string;
-        small: string;
-    };
-    user: {
-        name: string;
-        profile_image: {
-            small: string;
-            large: string;
-        };
-        username: string;
-    };
-}
+import { getDataWithBlurUrl } from "@/utils/getBase64";
+import { Photo } from "@/lib/types";
 
 const SearchPhotoContainer: React.FC = () => {
     const params = useParams<{ query: string }>();
@@ -48,11 +27,14 @@ const SearchPhotoContainer: React.FC = () => {
                 page,
                 accessToken
             );
+
+            const dataWithBlurHash = await getDataWithBlurUrl(userPhotos?.results);
+
             if (initialLoad) {
                 setInitialLoad(false);
-                setPhotos(userPhotos?.results);
+                setPhotos(dataWithBlurHash);
             } else {
-                setPhotos((prev) => [...prev, ...userPhotos?.results]);
+                setPhotos((prev) => [...prev, ...dataWithBlurHash]);
             }
         })(params.query);
     }, [perPage, page, params.query]);
@@ -68,6 +50,7 @@ const SearchPhotoContainer: React.FC = () => {
                                 key={index}
                                 slug={photo.slug}
                                 imageUrl={photo.urls?.small}
+                                blurHash={photo.blurHash}
                                 userImageUrl={photo.user?.profile_image?.large}
                                 name={photo.user?.name}
                                 username={photo.user?.username}

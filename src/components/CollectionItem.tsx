@@ -2,28 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { slugify } from "@/utils/helper";
-
-interface Tag {
-    title: string;
-}
-
-interface Photo {
-    slug: string;
-    urls: {
-        raw: string;
-        full: string;
-        small: string;
-    };
-}
-
-interface CollectionProps {
-    id: string;
-    title: string;
-    total_photos: number;
-    name: string;
-    tags: Tag[];
-    preview_photos: Photo[];
-}
+import { CollectionProps } from "@/lib/types";
 
 const CollectionItem: React.FC<CollectionProps> = (props) => {
     return (

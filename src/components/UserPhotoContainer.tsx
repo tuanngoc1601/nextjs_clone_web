@@ -8,33 +8,12 @@ import { getUserPhotos } from "@/api/unsplash";
 import { FaHeart, FaChevronDown } from "react-icons/fa";
 import { LuPlus } from "react-icons/lu";
 import { useStore } from "@/lib/store";
-
-interface PhotoProps {
-    id: string;
-    slug: string;
-    width: number;
-    height: number;
-    alt_description: string;
-    liked_by_user: boolean;
-    urls: {
-        raw: string;
-        regular: string;
-        full: string;
-        small: string;
-    };
-    user: {
-        name: string;
-        profile_image: {
-            small: string;
-            large: string;
-        };
-        username: string;
-    };
-}
+import { getDataWithBlurUrl } from "@/utils/getBase64";
+import { Photo } from "@/lib/types";
 
 const UserPhotoContainer: React.FC = () => {
     const params = useParams<{ username: string }>();
-    const [photos, setPhotos] = useState<PhotoProps[]>([]);
+    const [photos, setPhotos] = useState<Photo[]>([]);
     const [page, setPage] = useState(1);
     const perPage = 10;
     const [initialLoad, setInitialLoad] = useState(true);
@@ -58,11 +37,14 @@ const UserPhotoContainer: React.FC = () => {
                 page,
                 accessToken
             );
+
+            const dataWithBlurHash = await getDataWithBlurUrl(userPhotos);
+
             if (initialLoad) {
                 setInitialLoad(false);
-                setPhotos(userPhotos);
+                setPhotos(dataWithBlurHash);
             } else {
-                setPhotos((prev) => [...prev, ...userPhotos]);
+                setPhotos((prev) => [...prev, ...dataWithBlurHash]);
             }
         })(params.username);
     }, [perPage, page, params.username]);
@@ -85,6 +67,7 @@ const UserPhotoContainer: React.FC = () => {
                             key={index}
                             slug={photo.slug}
                             imageUrl={photo.urls?.small}
+                            blurHash={photo.blurHash}
                             userImageUrl={photo.user?.profile_image?.large}
                             name={photo.user?.name}
                             username={photo.user?.username}

@@ -5,28 +5,8 @@ import ImageItem from "./ImageItem";
 import { getPhotoCollection } from "@/api/unsplash";
 import { useParams } from "next/navigation";
 import { useStore } from "@/lib/store";
-
-interface Photo {
-    id: string;
-    alt_description: string;
-    slug: string;
-    width: number;
-    height: number;
-    liked_by_user: boolean;
-    urls: {
-        raw: string;
-        full: string;
-        small: string;
-    };
-    user: {
-        name: string;
-        profile_image: {
-            small: string;
-            large: string;
-        };
-        username: string;
-    };
-}
+import { getDataWithBlurUrl } from "@/utils/getBase64";
+import { Photo } from "@/lib/types";
 
 const CollectionPhotos = () => {
     const [photos, setPhotos] = useState<Photo[]>([]);
@@ -36,7 +16,10 @@ const CollectionPhotos = () => {
     useEffect(() => {
         (async () => {
             const data = await getPhotoCollection(params.collectionId, accessToken);
-            setPhotos(data);
+
+            const dataWithBlurHash = await getDataWithBlurUrl(data);
+
+            setPhotos(dataWithBlurHash);
         })();
     }, [params.collectionId]);
 
@@ -49,6 +32,7 @@ const CollectionPhotos = () => {
                         key={index}
                         slug={photo.slug}
                         imageUrl={photo.urls?.small}
+                        blurHash={photo.blurHash}
                         userImageUrl={photo.user?.profile_image?.large}
                         name={photo.user?.name}
                         username={photo.user?.username}

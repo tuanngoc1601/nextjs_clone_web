@@ -4,32 +4,7 @@ import React, { useEffect, useState } from "react";
 import CollectionItem from "./CollectionItem";
 import { getSearchCollections } from "@/api/unsplash";
 import { useParams } from "next/navigation";
-
-interface Tag {
-    type: string;
-    title: string;
-}
-
-interface Photo {
-    id: string;
-    slug: string;
-    urls: {
-        raw: string;
-        full: string;
-        small: string;
-    };
-}
-
-interface Collection {
-    id: string;
-    title: string;
-    total_photos: number;
-    user: {
-        name: string;
-    };
-    tags: Tag[];
-    preview_photos: Photo[];
-}
+import { Collection } from "@/lib/types";
 
 const SearchCollectionContainer = () => {
     const params = useParams<{ query: string }>();

@@ -4,33 +4,7 @@ import { IoIosMore } from "react-icons/io";
 import { IoLocationSharp, IoMail } from "react-icons/io5";
 import { IoIosLink } from "react-icons/io";
 import { FaCaretDown } from "react-icons/fa";
-
-interface Custom {
-    title: string;
-    source: {
-        title: string;
-    };
-}
-
-interface ProfileProps {
-    user: {
-        name: string;
-        first_name: string;
-        bio: string;
-        location: string;
-        total_photos: number;
-        total_likes: number;
-        total_collections: number;
-        profile_image: {
-            small: string;
-            medium: string;
-            large: string;
-        };
-        tags: {
-            custom: Custom[];
-        };
-    };
-}
+import { ProfileProps } from "@/lib/types";
 
 const ProfileInfo: React.FC<ProfileProps> = React.memo((props) => {
     return (

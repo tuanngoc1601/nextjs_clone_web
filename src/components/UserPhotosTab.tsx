@@ -4,12 +4,7 @@ import React, { useState } from "react";
 import { MdPhotoSizeSelectActual } from "react-icons/md";
 import { FaHeart } from "react-icons/fa6";
 import { MdCollections } from "react-icons/md";
-
-interface PhotoDataProps {
-    total_photos: number;
-    total_likes: number;
-    total_collections: number;
-}
+import { PhotoDataProps } from "@/lib/types";
 
 const UserPhotoTabs: React.FC<PhotoDataProps> = (props) => {
     const [activeTab, setActiveTab] = useState<string>("photos");

@@ -6,16 +6,9 @@ import { useStore } from "@/lib/store";
 import Link from "next/link";
 import { FaHeart, FaChevronDown } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
+import { HeaderProps } from "@/lib/types";
 
-interface Props {
-    id: string;
-    username: string;
-    name: string;
-    userImageUrl: string;
-    isLike: boolean;
-}
-
-const HeaderPhoto: React.FC<Props> = (props) => {
+const HeaderPhoto: React.FC<HeaderProps> = (props) => {
     const accessToken = useStore((state) => state.accessToken);
     const likedPhotos = useStore((state) => state.likedPhotos);
     const addLikedPhoto = useStore((state) => state.addLikedPhoto);
